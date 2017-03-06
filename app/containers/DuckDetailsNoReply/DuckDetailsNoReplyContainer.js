@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { DuckDetails } from 'components'
+import { DuckDetailsNoReply } from 'components'
 import { bindActionCreators } from 'redux'
 import * as duckActionCreators from 'redux/modules/ducks'
 import * as likeCountActionCreators from 'redux/modules/likeCount'
@@ -18,6 +18,9 @@ const DuckDetailsContainer = React.createClass({
         initLikeFetch: PropTypes.func.isRequired,
         addAndHandleReply: PropTypes.func.isRequired,
     },
+    contextTypes: {
+        router: PropTypes.object.isRequired,
+    },
     componentDidMount () {
         this.props.initLikeFetch(this.props.duckId);
         if (this.props.duckAlreadyFetched === false) {
@@ -26,14 +29,19 @@ const DuckDetailsContainer = React.createClass({
             this.props.removeFetching()
         }
     },
+    handleClick (e) {
+        e.stopPropagation();
+        this.context.router.push('/duckDetailReply/' + this.props.duckId)
+    },
     render () {
         return (
-            <DuckDetails
+            <DuckDetailsNoReply
                 addAndHandleReply={this.props.addAndHandleReply}
                 authedUser={this.props.authedUser}
                 duckId={this.props.duckId}
                 isFetching={this.props.isFetching}
-                error={this.props.error}/>
+                error={this.props.error}
+                onClick={this.handleClick} />
         )
     },
 });
@@ -52,7 +60,7 @@ function mapDispatchToProps (dispatch) {
     return bindActionCreators({
         ...duckActionCreators,
         ...likeCountActionCreators,
-        ...repliesActionCreators
+        ...repliesActionCreators,
     }, dispatch)
 }
 

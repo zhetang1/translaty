@@ -35,13 +35,13 @@ export default function Modal (props) {
 
     return (
         <span className={darkBtn} onClick={props.openModal}>
-      {'Duck'}
+      {'Ask Question'}
             <ReactModal style={modalStyles}
                         isOpen={props.isOpen}
                         onRequestClose={props.closeModal}
                         contentLabel={'Duck'}>
         <div className={newDuckTop}>
-          <span>{'Compose new Duck'}</span>
+          <span>{'Ask Question'}</span>
           <span onClick={props.closeModal} className={pointer}>{'X'}</span>
         </div>
         <div className={newDuckInputContainer}>
@@ -57,7 +57,7 @@ export default function Modal (props) {
             className={submitDuckBtn}
             disabled={props.isSubmitDisabled}
             onClick={submitDuck}>
-            {'Duck'}
+            {'Post Your Question'}
         </button>
       </ReactModal>
     </span>
