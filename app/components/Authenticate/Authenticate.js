@@ -13,8 +13,8 @@ export default function Authenticate ({error, isFetching, onAuth, onLogin}) {
     return (
         <div className={centeredContainer}>
             <h1 className={largeHeader}>{'Authenticate'}</h1>
-            <Register isFetching={isFetching} onAuth={onAuth} />
             <Login isFetching={isFetching} onAuth={onLogin} />
+            <Register isFetching={isFetching} onAuth={onAuth} />
             {error ? <p className={errorMsg}>{error}</p> : null}
         </div>
     )
