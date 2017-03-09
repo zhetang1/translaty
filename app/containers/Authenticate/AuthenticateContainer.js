@@ -9,6 +9,7 @@ const AuthenticateContainer = React.createClass({
         isFetching: PropTypes.bool.isRequired,
         error: PropTypes.string.isRequired,
         fetchAndHandleAuthedUser: PropTypes.func.isRequired,
+        fetchAndHandleLoginUser: PropTypes.func.isRequired,
     },
     contextTypes: {
         router: PropTypes.object.isRequired,
@@ -19,12 +20,19 @@ const AuthenticateContainer = React.createClass({
         this.props.fetchAndHandleAuthedUser(elements[0].value, elements[1].value)
             .then(() => this.context.router.replace('feed'))
     },
+    handleLogin (e) {
+        e.preventDefault();
+        const elements = e.currentTarget.elements;
+        this.props.fetchAndHandleLoginUser(elements[0].value, elements[1].value)
+            .then(() => this.context.router.replace('feed'))
+    },
     render () {
         return (
             <Authenticate
                 isFetching={this.props.isFetching}
                 error={this.props.error}
-                onAuth={this.handleAuth} />
+                onAuth={this.handleAuth}
+                onLogin={this.handleLogin} />
         )
     }
 });
