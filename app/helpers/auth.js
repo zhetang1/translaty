@@ -1,20 +1,28 @@
-import firebase from 'firebase'
 import { ref, firebaseAuth } from 'config/constants'
 
-export default function auth () {
-    return firebaseAuth().signInWithPopup(new firebase.auth.FacebookAuthProvider())
-}
-
-export function checkIfAuthed (store) {
-    return store.getState().users.isAuthed === true
+export function auth (email, pw) {
+    return firebaseAuth().createUserWithEmailAndPassword(email, pw)
+        .then(saveUser)
+        .catch((error) => console.log('Oops', error))
 }
 
 export function logout () {
     return firebaseAuth().signOut()
 }
 
-export function saveUser (user) {
-    return ref.child(`users/${user.uid}`)
-        .set(user)
+export function login (email, pw) {
+    return firebaseAuth().signInWithEmailAndPassword(email, pw)
+}
+
+function saveUser (user) {
+    return ref.child(`users/${user.uid}/info`)
+        .set({
+            email: user.email,
+            uid: user.uid
+        })
         .then(() => user)
+}
+
+export function checkIfAuthed (store) {
+    return store.getState().users.isAuthed === true
 }
