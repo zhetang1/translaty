@@ -24,7 +24,7 @@ const FeedContainer = React.createClass({
     componentDidMount () {
         retrievingCurrentUserFromLocalStorage()
             .then((session) => {
-            if (session.isValid()) {
+            if (session !== undefined && session.isValid()) {
                 const username = retrievingCurrentUserNameFromLocalStorage();
                 const ddbDocClient = createDdbDocClient(session);
                 this.props.fetchingUserSuccess(username, formatUserInfo(username),

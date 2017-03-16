@@ -75,6 +75,11 @@ export function retrievingCurrentUserFromLocalStorage() {
             })
         });
     }
+    else {
+        return new Promise(function (resolve) {
+            resolve();
+        })
+    }
 }
 
 export function retrievingCurrentUserNameFromLocalStorage() {
