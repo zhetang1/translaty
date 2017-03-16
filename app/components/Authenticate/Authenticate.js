@@ -15,6 +15,14 @@ export default function Authenticate ({error, isFetching, onAuth, onLogin}) {
             <h1 className={largeHeader}>{'Authenticate'}</h1>
             <Login isFetching={isFetching} onAuth={onLogin} />
             <Register isFetching={isFetching} onAuth={onAuth} />
+            <p>
+                {'Password must have:'}
+                <li>{'Minimum 8 characters'}</li>
+                <li>{'Require numbers'}</li>
+                <li>{'Require special character'}</li>
+                <li>{'Require uppercase letters'}</li>
+                <li>{'Require lowercase letters'}</li>
+            </p>
             {error ? <p className={errorMsg}>{error}</p> : null}
         </div>
     )

@@ -1,6 +1,6 @@
 import { usersDucksExpirationLength, userExpirationLength, repliesExpirationLength } from 'config/constants'
 
-export function formatUserInfo (name, avatar, uid) {
+export function formatUserInfoFromFireBase (name, avatar, uid) {
     return {
         name,
         avatar,
@@ -8,12 +8,16 @@ export function formatUserInfo (name, avatar, uid) {
     }
 }
 
-export function formatDuck (text, {name, avatar, uid}) {
+export function formatUserInfo (name) {
+    return {
+        name,
+    }
+}
+
+export function formatDuck (text, {name}) {
     return {
         text,
         name,
-        avatar,
-        uid,
         timestamp: Date.now()
     }
 }
@@ -39,12 +43,14 @@ export function staleReplies (timestamp) {
     return getMilliseconds(timestamp) > repliesExpirationLength
 }
 
-export function formatReply({name, uid, avatar}, reply) {
+export function formatReply(username, reply) {
     return {
-        name,
         reply,
-        uid,
-        avatar,
+        username,
         timestamp: Date.now()
     }
+}
+
+export function checkIfAuthed (store) {
+    return store.getState().users.isAuthed === true
 }

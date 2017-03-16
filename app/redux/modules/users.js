@@ -1,5 +1,5 @@
 import { fetchUser } from 'helpers/api'
-import { auth, login, logout, saveUser } from 'helpers/auth'
+import { signUp, confirmRegistration, authenticateUser, createDdbDocClient, logout } from 'helpers/cognito'
 import { formatUserInfo } from 'helpers/utils'
 
 const AUTH_USER = 'AUTH_USER';
@@ -9,10 +9,11 @@ const FETCHING_USER_FAILURE = 'FETCHING_USER_FAILURE';
 const FETCHING_USER_SUCCESS = 'FETCHING_USER_SUCCESS';
 const REMOVE_FETCHING_USER = 'REMOVE_FETCHING_USER';
 
-export function authUser (uid) {
+export function authUser (username, ddbDocClient) {
     return {
         type: AUTH_USER,
-        uid,
+        username,
+        ddbDocClient,
     }
 }
 
@@ -36,46 +37,46 @@ function fetchingUserFailure(error) {
     }
 }
 
-export function fetchingUserSuccess(uid, user, timestamp) {
+export function fetchingUserSuccess(username, user, ddbDocClient, timestamp) {
     return {
         type: FETCHING_USER_SUCCESS,
-        uid,
+        username,
         user,
+        ddbDocClient,
         timestamp,
     }
 }
 
-export function fetchAndHandleUser (uid) {
+export function fetchAndHandleUser (username) {
     return function (dispatch) {
         dispatch(fetchingUser());
-        return fetchUser(uid)
-            .then((user) => dispatch(fetchingUserSuccess(uid, user, Date.now())))
+        return fetchUser(username)
+            .then((user) => dispatch(fetchingUserSuccess(username, Date.now())))
             .catch((error) => dispatch(fetchingUserFailure(error)))
     }
 }
 
-export function fetchAndHandleAuthedUser (email, pw) {
-    return function (dispatch) {
-        dispatch(fetchingUser());
-        return auth(email, pw).then(({providerData, uid}) => {
-            const userData = providerData[0];
-            const userInfo = formatUserInfo(userData.email, userData.photoURL, uid);
-            return dispatch(fetchingUserSuccess(uid, userInfo, Date.now()));
-        })
-            .then((user) => dispatch(authUser(user.uid)))
-            .catch((error) => dispatch(fetchingUserFailure(error)))
+export function signUpNewUser (email, username, pw) {
+    return function () {
+        return signUp(email, username, pw)
     }
 }
 
-export function fetchAndHandleLoginUser (email, pw) {
+export function confirmUser (username, pw) {
+    return function () {
+        return confirmRegistration(username, pw)
+    }
+}
+
+export function fetchAndHandleAuthedUser (username, pw) {
     return function (dispatch) {
         dispatch(fetchingUser());
-        return login(email, pw).then(({providerData, uid}) => {
-            const userData = providerData[0];
-            const userInfo = formatUserInfo(userData.email, userData.photoURL, uid);
-            return dispatch(fetchingUserSuccess(uid, userInfo, Date.now()));
+        return authenticateUser(username, pw)
+            .then((result) => {
+                return dispatch(fetchingUserSuccess(username, formatUserInfo(username),
+                    createDdbDocClient(result), Date.now()))
         })
-            .then((user) => dispatch(authUser(user.uid)))
+            .then((user) => dispatch(authUser(user.username, user.ddbDocClient)))
             .catch((error) => dispatch(fetchingUserFailure(error)))
     }
 }
@@ -97,8 +98,6 @@ const initialUserState = {
     lastUpdated: 0,
     info: {
         name: '',
-        uid: '',
-        avatar: ''
     }
 };
 
@@ -119,7 +118,8 @@ const initialState = {
     isFetching: true,
     error: '',
     isAuthed: false,
-    authedId: ''
+    authedId: '',
+    ddbDocClient: null,
 };
 
 export default function users (state = initialState, action) {
@@ -128,13 +128,16 @@ export default function users (state = initialState, action) {
             return {
                 ...state,
                 isAuthed: true,
-                authedId: action.uid
+                authedId: action.username,
+                ddbDocClient: action.ddbDocClient,
+
             };
         case UNAUTH_USER :
             return {
                 ...state,
                 isAuthed: false,
-                authedId: ''
+                authedId: '',
+                ddbDocClient: null,
             };
         case FETCHING_USER :
             return {
@@ -150,16 +153,16 @@ export default function users (state = initialState, action) {
         case FETCHING_USER_SUCCESS :
             return action.user === null
                 ? {
-                ...state,
-                isFetching: false,
-                error: ''
-            }
+                    ...state,
+                    isFetching: false,
+                    error: ''
+                }
                 : {
-                ...state,
-                isFetching: false,
-                error: '',
-                [action.uid]: user(state[action.uid], action)
-            };
+                    ...state,
+                    isFetching: false,
+                    error: '',
+                    [action.username]: user(state[action.username], action),
+                };
         case REMOVE_FETCHING_USER :
             return {
                 ...state,

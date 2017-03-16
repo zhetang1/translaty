@@ -77,11 +77,9 @@ export function fetchAndHandleReplies (duckId) {
 }
 
 const initialReply = {
-    name: '',
     reply: '',
-    uid: '',
+    username: '',
     timestamp: 0,
-    avatar: '',
     replyId: '',
 };
 

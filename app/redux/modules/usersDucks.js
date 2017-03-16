@@ -6,46 +6,47 @@ const FETCHING_USERS_DUCKS = 'FETCHING_USERS_DUCKS';
 const FETCHING_USERS_DUCKS_ERROR = 'FETCHING_USERS_DUCKS_ERROR';
 const FETCHING_USERS_DUCKS_SUCCUSS = 'FETCHING_USERS_DUCKS_SUCCUSS';
 
-function fetchingUsersDucks (uid) {
+function fetchingUsersDucks (username) {
     return {
         type: FETCHING_USERS_DUCKS,
-        uid,
+        username,
     }
 }
 
 function fetchingUsersDucksError (error) {
+    console.warn(error);
     return {
         type: FETCHING_USERS_DUCKS_ERROR,
         error: 'Error fetching Users Ducks Ids',
     }
 }
 
-function fetchingUsersDucksSuccess (uid, duckIds, lastUpdated) {
+function fetchingUsersDucksSuccess (username, duckIds, lastUpdated) {
     return {
         type: FETCHING_USERS_DUCKS_SUCCUSS,
-        uid,
+        username,
         duckIds,
         lastUpdated,
     }
 }
 
-export function addSingleUsersDuck (uid, duckId) {
+export function addSingleUsersDuck (username, duckId) {
     return {
         type: ADD_SINGLE_USERS_DUCK,
-        uid,
+        username,
         duckId,
     }
 }
 
-export function fetchAndHandleUsersDucks(uid) {
+export function fetchAndHandleUsersDucks(username) {
     return function (dispatch) {
         dispatch(fetchingUsersDucks());
 
-        fetchUsersDucks(uid)
+        fetchUsersDucks(username)
             .then((ducks) => dispatch(addMultipleDucks(ducks)))
             .then(({ducks}) => dispatch(
                 fetchingUsersDucksSuccess(
-                    uid,
+                    username,
                     Object.keys(ducks).sort((a,b) => ducks[b].timestamp - ducks[a].timestamp),
                     Date.now()
                 )
@@ -98,19 +99,19 @@ export default function usersDucks (state = initialState, action) {
                 ...state,
                 isFetching: false,
                 error: '',
-                [action.uid]: {
+                [action.username]: {
                     lastUpdated: action.lastUpdated,
                     duckIds: action.duckIds,
                 },
             };
         case ADD_SINGLE_USERS_DUCK :
-            return typeof state[action.uid] === 'undefined'
+            return typeof state[action.username] === 'undefined'
                 ? state
                 : {
                 ...state,
                 isFetching: false,
                 error: '',
-                [action.uid]: usersDuck(state[action.uid]),
+                [action.username]: usersDuck(state[action.username]),
             };
         default :
             return state

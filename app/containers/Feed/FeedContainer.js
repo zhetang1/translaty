@@ -6,7 +6,8 @@ import * as feedActionCreators from 'redux/modules/feed'
 import * as userActionCreators from 'redux/modules/users'
 import * as usersLikesActionCreator from 'redux/modules/usersLikes'
 import { List } from 'immutable'
-import { firebaseAuth } from 'config/constants'
+import { retrievingCurrentUserFromLocalStorage, retrievingCurrentUserNameFromLocalStorage,
+    createDdbDocClient } from 'helpers/cognito'
 import { formatUserInfo } from 'helpers/utils'
 
 const FeedContainer = React.createClass({
@@ -21,12 +22,14 @@ const FeedContainer = React.createClass({
         setUsersLikes: PropTypes.func.isRequired,
     },
     componentDidMount () {
-        firebaseAuth().onAuthStateChanged((user) => {
-            if (user) {
-                const userData = user.providerData[0];
-                const userInfo = formatUserInfo(userData.displayName, userData.photoURL, userData.uid);
-                this.props.authUser(user.uid);
-                this.props.fetchingUserSuccess(user.uid, userInfo, Date.now());
+        retrievingCurrentUserFromLocalStorage()
+            .then((session) => {
+            if (session.isValid()) {
+                const username = retrievingCurrentUserNameFromLocalStorage();
+                const ddbDocClient = createDdbDocClient(session);
+                this.props.fetchingUserSuccess(username, formatUserInfo(username),
+                    ddbDocClient, Date.now());
+                this.props.authUser(username, ddbDocClient);
                 this.props.setUsersLikes();
             } else {
                 this.props.removeFetchingUser()

@@ -1,15 +1,14 @@
 import React, { PropTypes } from 'react'
-import { Authenticate } from 'components'
+import { ConfirmRegistration } from 'components'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as userActionCreators from 'redux/modules/users'
 
-const AuthenticateContainer = React.createClass({
+const ConfirmRegistrationContainer = React.createClass({
     propTypes: {
         isFetching: PropTypes.bool.isRequired,
         error: PropTypes.string.isRequired,
-        signUpNewUser: PropTypes.func.isRequired,
-        fetchAndHandleAuthedUser: PropTypes.func.isRequired,
+        confirmUser: PropTypes.func.isRequired,
     },
     contextTypes: {
         router: PropTypes.object.isRequired,
@@ -17,22 +16,15 @@ const AuthenticateContainer = React.createClass({
     handleAuth (e) {
         e.preventDefault();
         const elements = e.currentTarget.elements;
-        this.props.signUpNewUser(elements[0].value, elements[1].value, elements[2].value);
-        this.context.router.replace('confirmRegistration')
-    },
-    handleLogin (e) {
-        e.preventDefault();
-        const elements = e.currentTarget.elements;
-        this.props.fetchAndHandleAuthedUser(elements[0].value, elements[1].value)
-            .then(() => this.context.router.replace('feed'))
+        this.props.confirmUser(elements[0].value, elements[1].value);
+        this.context.router.replace('auth')
     },
     render () {
         return (
-            <Authenticate
+            <ConfirmRegistration
                 isFetching={this.props.isFetching}
                 error={this.props.error}
-                onAuth={this.handleAuth}
-                onLogin={this.handleLogin} />
+                onAuth={this.handleAuth} />
         )
     }
 });
@@ -51,4 +43,4 @@ function mapDispatchToProps (dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(AuthenticateContainer)
+)(ConfirmRegistrationContainer)

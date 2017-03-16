@@ -1,7 +1,7 @@
-import { saveDuck, fetchDuck } from 'helpers/api'
+import { saveQuestion, fetchDuck } from 'helpers/ddb'
 import { closeModal } from './modal'
 import { addSingleUsersDuck } from './usersDucks'
-import { Map, fromJS } from 'immutable'
+import { Map } from 'immutable'
 
 const FETCHING_DUCK = 'FETCHING_DUCK';
 const ADD_DUCK = 'ADD_DUCK';
@@ -45,12 +45,16 @@ function addDuck (duck) {
 
 export function duckFanout (duck) {
     return function (dispatch, getState) {
-        const uid = getState().users.authedId;
-        saveDuck(duck)
-            .then((duckWithId) => {
-                dispatch(addDuck(duckWithId));
+        const users = getState().users;
+        const username = users.authedId;
+        const ddbDocClient = users.ddbDocClient;
+        const duckId = duck.name.concat('_').concat(duck.timestamp);
+        duck.duckId = duckId;
+        saveQuestion(duckId, duck, ddbDocClient)
+            .then(() => {
+                dispatch(addDuck(duck));
                 dispatch(closeModal());
-                dispatch(addSingleUsersDuck(uid, duckWithId.duckId))
+                dispatch(addSingleUsersDuck(username, duckId))
             })
             .catch((err) => {
                 console.warn('Error in duckFanout', err)

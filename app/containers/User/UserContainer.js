@@ -19,13 +19,13 @@ const UserContainer = React.createClass({
         lastUpdatedDucks: PropTypes.number.isRequired,
     },
     componentDidMount () {
-        const uid = this.props.routeParams.uid;
+        const username = this.props.routeParams.username;
         if (this.props.noUser === true || staleUser(this.props.lastUpdatedUser)) {
-            this.props.fetchAndHandleUser(uid);
+            this.props.fetchAndHandleUser(username);
         }
 
         if (this.props.noUser === true || staleDucks(this.props.lastUpdatedDucks)) {
-            this.props.fetchAndHandleUsersDucks(uid);
+            this.props.fetchAndHandleUsersDucks(username);
         }
     },
     render () {
@@ -41,8 +41,8 @@ const UserContainer = React.createClass({
 });
 
 function mapStateToProps ({users, usersDucks}, props) {
-    const specificUsersDucks = usersDucks[props.routeParams.uid];
-    const user = users[props.routeParams.uid];
+    const specificUsersDucks = usersDucks[props.routeParams.username];
+    const user = users[props.routeParams.username];
     const noUser = typeof user === 'undefined';
     return {
         noUser,
