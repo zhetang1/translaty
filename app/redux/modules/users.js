@@ -1,5 +1,6 @@
 import { fetchUser } from 'helpers/api'
 import { signUp, confirmRegistration, authenticateUser, createDdbDocClient, logout } from 'helpers/cognito'
+import { createReadOnlyDdbDocClient, clearAwsConfig } from 'helpers/ddb'
 import { formatUserInfo } from 'helpers/utils'
 
 const AUTH_USER = 'AUTH_USER';
@@ -119,7 +120,7 @@ const initialState = {
     error: '',
     isAuthed: false,
     authedId: '',
-    ddbDocClient: null,
+    ddbDocClient: createReadOnlyDdbDocClient(),
 };
 
 export default function users (state = initialState, action) {
@@ -137,7 +138,7 @@ export default function users (state = initialState, action) {
                 ...state,
                 isAuthed: false,
                 authedId: '',
-                ddbDocClient: null,
+                ddbDocClient: createReadOnlyDdbDocClient(),
             };
         case FETCHING_USER :
             return {

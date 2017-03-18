@@ -1,5 +1,5 @@
 import { addListener } from 'redux/modules/listeners'
-import { listenToFeed } from 'helpers/api'
+import { listenToFeed } from 'helpers/ddb'
 import { addMultipleDucks } from 'redux/modules/ducks'
 import { fromJS, List } from 'immutable'
 
@@ -22,7 +22,7 @@ function settingFeedListenerError (error) {
     }
 }
 
-function settignFeedListenerSuccess (duckIds) {
+function settingFeedListenerSuccess (duckIds) {
     return {
         type: SETTING_FEED_LISTENER_SUCCESS,
         duckIds,
@@ -45,17 +45,30 @@ export function resetNewDucksAvailable () {
 export function setAndHandleFeedListener () {
     let initialFetch = true;
     return function (dispatch, getState) {
-        if (getState().listeners.feed === true) {
+        const state = getState();
+        if (state.listeners.feed === true) {
             return
         }
 
         dispatch(addListener('feed'));
         dispatch(settingFeedListener());
 
-        listenToFeed(({feed, sortedIds}) => {
+        listenToFeed(state.users.ddbDocClient).
+        then((response) => {
+            const feeds = response.Items.sort((a, b) => {
+                return b.timestamp - a.timestamp
+            });
+            const feed = {};
+            const sortedIds = [];
+            feeds.forEach( (x) => {
+                const id = x.username_timestamp;
+                feed[id] = x;
+                sortedIds.push(id);
+            });
+
             dispatch(addMultipleDucks(feed));
             initialFetch === true
-                ? dispatch(settignFeedListenerSuccess(sortedIds))
+                ? dispatch(settingFeedListenerSuccess(sortedIds))
                 : dispatch(addNewDuckIdToFeed(sortedIds[0]));
             initialFetch = false
         }, (error) => dispatch(settingFeedListenerError(error)))

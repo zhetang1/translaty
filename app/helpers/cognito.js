@@ -1,15 +1,7 @@
 import AWS from 'aws-sdk';
-import { CognitoUserPool, CognitoUserAttribute, CognitoUser,
-    AuthenticationDetails } from 'amazon-cognito-identity-js';
-
-const region = 'us-east-1';
-const ddbEndpoint = 'dynamodb.'.concat(region).concat('.amazonaws.com');
-const identityPoolId = region.concat(':68685362-9240-40eb-81c5-89fa03df2bc4');
-
-const userPool = new CognitoUserPool({
-    UserPoolId: 'us-east-1_SkRxE85kt',
-    ClientId: '27b4ip5flrt528fjc4cjk86a57',
-});
+import { CognitoUserAttribute, CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
+import { region, identityPoolId, userPool } from 'config/constants'
+import { clearAwsConfig } from 'helpers/ddb'
 
 export function signUp(email, username, pw) {
     const attributeList = [];
@@ -87,6 +79,7 @@ export function retrievingCurrentUserNameFromLocalStorage() {
 }
 
 export function createDdbDocClient(authenticateResult) {
+    clearAwsConfig();
     AWS.config.region = region;
     AWS.config.credentials = new AWS.CognitoIdentityCredentials({
         IdentityPoolId: identityPoolId,
