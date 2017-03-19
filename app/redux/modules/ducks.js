@@ -1,4 +1,4 @@
-import { saveQuestion, fetchDuck } from 'helpers/ddb'
+import { saveQuestion, fetchQuestion } from 'helpers/ddb'
 import { closeModal } from './modal'
 import { addSingleUsersDuck } from './usersDucks'
 import { Map } from 'immutable'
@@ -69,11 +69,11 @@ export function addMultipleDucks (ducks) {
     }
 }
 
-export function fetchAndHandleDuck (duckId) {
+export function fetchAndHandleDuck (questionId) {
     return function (dispatch) {
         dispatch(fetchingDuck());
-        fetchDuck(duckId)
-            .then((duck) => dispatch(fetchingDuckSuccess(duck)))
+        fetchQuestion(questionId)
+            .then((question) => dispatch(fetchingDuckSuccess(question)))
             .catch((error) => dispatch(fetchingDuckError(error)))
     }
 }
@@ -94,7 +94,7 @@ export default function ducks (state = initialState, action) {
             return state.merge({
                 error: '',
                 isFetching: false,
-                [action.duck.duckId]: action.duck,
+                [action.question.username_timestamp]: action.question,
             });
         case FETCHING_DUCK_ERROR :
             return state.merge({

@@ -20,13 +20,27 @@ export function saveQuestion (questionId, {name, timestamp, text}, ddbDocClient)
     });
 }
 
-export function listenToFeed (readOnlyDdbDocClient) {
+export function listenToFeed (ddbDocClient) {
     const params = {
-        TableName: "question",
+        TableName: 'question',
     };
 
     return new Promise(function (resolve, reject) {
-        readOnlyDdbDocClient.scan(params, function (err, data) {
+        ddbDocClient.scan(params, function (err, data) {
+            if(err !== null) return reject(err);
+            resolve(data);
+        })
+    });
+}
+
+export function fetchQuestion (questionId, ddbDocClient) {
+    const params = {
+        TableName : 'question',
+        Key: { 'username_timestamp': questionId }
+    };
+
+    return new Promise(function (resolve, reject) {
+        ddbDocClient.get(params, function (err, data) {
             if(err !== null) return reject(err);
             resolve(data);
         })

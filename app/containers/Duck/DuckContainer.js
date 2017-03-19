@@ -8,7 +8,7 @@ const { func, object, bool, number } = PropTypes;
 
 const DuckContainer = React.createClass({
     propTypes: {
-        duck: object.isRequired,
+        question: object.isRequired,
         numberOfLikes: number,
         isLiked: bool.isRequired,
         hideLikeCount: bool.isRequired,
@@ -27,11 +27,11 @@ const DuckContainer = React.createClass({
     },
     goToProfile (e) {
         e.stopPropagation();
-        this.context.router.push('/' + this.props.duck.get('username'))
+        this.context.router.push('/' + this.props.question.get('user'))
     },
     handleClick (e) {
         e.stopPropagation();
-        this.context.router.push('/duckDetail/' + this.props.duck.get('duckId'))
+        this.context.router.push('/duckDetail/' + this.props.question.get('username_timestamp'))
     },
     render () {
         return (
@@ -45,7 +45,7 @@ const DuckContainer = React.createClass({
 
 function mapStateToProps ({ducks, likeCount, usersLikes}, props) {
     return {
-        duck: ducks.get(props.duckId),
+        question: ducks.get(props.duckId),
         hideLikeCount: props.hideLikeCount,
         hideReplyBtn: props.hideReplyBtn,
         isLiked: usersLikes[props.duckId] === true,

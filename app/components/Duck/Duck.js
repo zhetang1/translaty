@@ -9,7 +9,7 @@ header, text, likeReplyContainer, icon, likedIcon, author,
 import { Map } from 'immutable'
 
 Duck.propTypes = {
-    duck: PropTypes.instanceOf(Map),
+    question: PropTypes.instanceOf(Map),
     onClick: PropTypes.func,
     isLiked: PropTypes.bool.isRequired,
     addAndHandleLike: PropTypes.func.isRequired,
@@ -29,19 +29,19 @@ export default function Duck (props) {
         style={{cursor: props.hideReplyBtn === true ? 'default' : 'pointer'}}
         onClick={props.onClick}
         >
-            <img src={props.duck.get('avatar')} className={avatar} />
+            <img src={props.question.get('avatar')} className={avatar} />
             <div className={contentContainer}>
                 <div className={header}>
-                    <div onClick={props.goToProfile} className={author}>{props.duck.get('name')}</div>
-                    <div>{formatTimestamp(props.duck.get('timestamp'))}</div>
+                    <div onClick={props.goToProfile} className={author}>{props.question.get('user')}</div>
+                    <div>{formatTimestamp(props.question.get('timestamp'))}</div>
                 </div>
-                <div className={text}>{props.duck.get('text')}</div>
+                <div className={text}>{props.question.get('text')}</div>
                 <div className={likeReplyContainer}>
                     {props.hideReplyBtn === true
                     ? null
                     : <Reply className={icon} />}
                     <div className={actionContainer}>
-                        <Star className={startIcon} onClick={(e) => startFn(props.duck.get('duckId'), e)} />
+                        <Star className={startIcon} onClick={(e) => startFn(props.question.get('username_timestamp'), e)} />
                         {props.hideLikeCount === true ? null : <div>{props.numberOfLikes}</div>}
                     </div>
                 </div>
