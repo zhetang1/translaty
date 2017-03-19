@@ -20,6 +20,33 @@ export function saveQuestion (questionId, {name, timestamp, text}, ddbDocClient)
     });
 }
 
+export function postReply (questionId, replyId, {name, timestamp, text}, ddbDocClient) {
+    const params = {
+        TableName: 'reply',
+        Item:{
+            'questionId': questionId,
+            'username_timestamp': replyId,
+            'text': text,
+            'user': name,
+            'timestamp': timestamp,
+        }
+    };
+
+    const replyWithId = {...reply, replyId};
+
+    const replyPromise = new Promise(function (resolve, reject) {
+        ddbDocClient.put(params, function(err, data) {
+            if(err !== null) return reject(err);
+            resolve(data)
+        })
+    });
+
+    return {
+        replyWithId,
+        replyPromise,
+    }
+}
+
 export function listenToFeed (ddbDocClient) {
     const params = {
         TableName: 'question',
@@ -41,6 +68,26 @@ export function fetchQuestion (questionId, ddbDocClient) {
 
     return new Promise(function (resolve, reject) {
         ddbDocClient.get(params, function (err, data) {
+            if(err !== null) return reject(err);
+            resolve(data);
+        })
+    });
+}
+
+export function fetchReplies (questionId, ddbDocClient) {
+    const params = {
+        TableName : 'reply',
+        KeyConditionExpression: "#questionId = :questionId",
+        ExpressionAttributeNames:{
+            "#questionId": "questionId"
+        },
+        ExpressionAttributeValues: {
+            ":questionId": questionId
+        }
+    };
+
+    return new Promise(function (resolve, reject) {
+        ddbDocClient.query(params, function (err, data) {
             if(err !== null) return reject(err);
             resolve(data);
         })

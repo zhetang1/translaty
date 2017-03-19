@@ -18,15 +18,13 @@ function Reply ({submit}) {
 }
 
 DuckDetailsNoReply.propTypes = {
-    authedUser: PropTypes.object.isRequired,
     duckId: PropTypes.string.isRequired,
     isFetching: PropTypes.bool.isRequired,
     error: PropTypes.string.isRequired,
-    addAndHandleReply: PropTypes.func.isRequired,
     onClick: PropTypes.func.isRequired,
 };
 
-export default function DuckDetailsNoReply ({duckId, isFetching, authedUser, error, addAndHandleReply, onClick}) {
+export default function DuckDetailsNoReply ({duckId, isFetching, error, onClick}) {
     return (
         <div className={mainContainer}>
             {isFetching === true

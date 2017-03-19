@@ -23,10 +23,10 @@ function fetchingDuckError (error) {
     }
 }
 
-function fetchingDuckSuccess (duck) {
+function fetchingDuckSuccess (question) {
     return {
         type: FETCHING_DUCK_SUCCESS,
-        duck,
+        question,
     }
 }
 
@@ -70,10 +70,12 @@ export function addMultipleDucks (ducks) {
 }
 
 export function fetchAndHandleDuck (questionId) {
-    return function (dispatch) {
+    return function (dispatch, getState) {
         dispatch(fetchingDuck());
-        fetchQuestion(questionId)
-            .then((question) => dispatch(fetchingDuckSuccess(question)))
+        fetchQuestion(questionId, getState().users.ddbDocClient)
+            .then((response) => {
+                dispatch(fetchingDuckSuccess(response.Item))
+            })
             .catch((error) => dispatch(fetchingDuckError(error)))
     }
 }

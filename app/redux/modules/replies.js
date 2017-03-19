@@ -1,4 +1,4 @@
-import { postReply, fetchReplies } from 'helpers/api'
+import { postReply, fetchReplies } from 'helpers/ddb'
 
 const FETCHING_REPLIES = 'FETCHING_REPLIES';
 const FETCHING_REPLIES_ERROR = 'FETCHING_REPLIES_ERROR';
@@ -66,12 +66,15 @@ export function addAndHandleReply (duckId, reply) {
     }
 }
 
-export function fetchAndHandleReplies (duckId) {
-    return function (dispatch) {
+export function fetchAndHandleReplies (questionId) {
+    return function (dispatch, getState) {
         dispatch(fetchingReplies());
-
-        fetchReplies(duckId)
-            .then((replies) => dispatch(fetchingRepliesSuccess(duckId, replies, Date.now())))
+        fetchReplies(questionId, getState().users.ddbDocClient)
+            .then((response) => {
+                const replies = {};
+                response.Items.forEach( (x) => { replies[x.username_timestamp] = x.text });
+                dispatch(fetchingRepliesSuccess(questionId, replies))
+            })
             .catch((error) => dispatch(fetchingRepliesError(error)))
     }
 }

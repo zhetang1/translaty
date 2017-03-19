@@ -5,10 +5,10 @@ import { bindActionCreators } from 'redux'
 import * as duckActionCreators from 'redux/modules/ducks'
 import * as likeCountActionCreators from 'redux/modules/likeCount'
 import * as repliesActionCreators from 'redux/modules/replies'
+import { retrievingCurrentUserFromLocalStorage } from 'helpers/cognito'
 
 const DuckDetailsContainer = React.createClass({
     propTypes: {
-        authedUser: PropTypes.object.isRequired,
         duckId: PropTypes.string.isRequired,
         isFetching: PropTypes.bool.isRequired,
         error: PropTypes.string.isRequired,
@@ -16,7 +16,6 @@ const DuckDetailsContainer = React.createClass({
         removeFetching: PropTypes.func.isRequired,
         fetchAndHandleDuck: PropTypes.func.isRequired,
         initLikeFetch: PropTypes.func.isRequired,
-        addAndHandleReply: PropTypes.func.isRequired,
     },
     contextTypes: {
         router: PropTypes.object.isRequired,
@@ -36,8 +35,6 @@ const DuckDetailsContainer = React.createClass({
     render () {
         return (
             <DuckDetailsNoReply
-                addAndHandleReply={this.props.addAndHandleReply}
-                authedUser={this.props.authedUser}
                 duckId={this.props.duckId}
                 isFetching={this.props.isFetching}
                 error={this.props.error}
