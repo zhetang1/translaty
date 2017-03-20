@@ -20,15 +20,15 @@ export function saveQuestion (questionId, {name, timestamp, text}, ddbDocClient)
     });
 }
 
-export function postReply (questionId, replyId, {name, timestamp, text}, ddbDocClient) {
+export function postReply (questionId, replyId, reply, ddbDocClient) {
     const params = {
         TableName: 'reply',
         Item:{
             'questionId': questionId,
             'username_timestamp': replyId,
-            'text': text,
-            'user': name,
-            'timestamp': timestamp,
+            'text': reply.reply,
+            'user': reply.name,
+            'timestamp': reply.timestamp,
         }
     };
 

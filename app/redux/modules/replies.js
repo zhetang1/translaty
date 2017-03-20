@@ -55,8 +55,13 @@ function fetchingRepliesSuccess (duckId, replies) {
 }
 
 export function addAndHandleReply (questionId, reply) {
-    return function (dispatch) {
-        const { replyWithId, replyPromise } = postReply(questionId, reply);
+    return function (dispatch, getState) {
+        const users = getState().users;
+        const authedId = users.authedId;
+        const timestamp = reply.timestamp;
+        const replyId = authedId.concat('_', timestamp);
+        const { replyWithId, replyPromise } = postReply(questionId, replyId,
+            {authedId, timestamp, reply: reply.reply}, users.ddbDocClient);
 
         dispatch(addReply(questionId, replyWithId));
         replyPromise.catch((error) => {

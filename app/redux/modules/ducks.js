@@ -48,7 +48,7 @@ export function duckFanout (duck) {
         const users = getState().users;
         const username = users.authedId;
         const ddbDocClient = users.ddbDocClient;
-        const duckId = duck.name.concat('_').concat(duck.timestamp);
+        const duckId = duck.name.concat('_', duck.timestamp);
         duck.duckId = duckId;
         saveQuestion(duckId, duck, ddbDocClient)
             .then(() => {

@@ -20,6 +20,8 @@ const FeedContainer = React.createClass({
         resetNewDucksAvailable: PropTypes.func.isRequired,
         authUser: PropTypes.func.isRequired,
         setUsersLikes: PropTypes.func.isRequired,
+        fetchingUserSuccess: PropTypes.func.isRequired,
+        removeFetchingUser: PropTypes.func.isRequired,
     },
     componentDidMount () {
         retrievingCurrentUserFromLocalStorage()
