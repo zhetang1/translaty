@@ -27,7 +27,7 @@ export function postReply (questionId, replyId, reply, ddbDocClient) {
             'questionId': questionId,
             'username_timestamp': replyId,
             'text': reply.reply,
-            'user': reply.name,
+            'user': reply.authedId,
             'timestamp': reply.timestamp,
         }
     };

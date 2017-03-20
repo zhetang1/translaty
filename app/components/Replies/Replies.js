@@ -12,7 +12,7 @@ Reply.propTypes = {
 function Reply ({comment}) {
     return (
         <div className={replyContainer}>
-            <img src={comment.avatar} alt={comment.name} className={avatar} />
+            {/*<img src={comment.avatar} alt={comment.name} className={avatar} />*/}
             <div>
                 <div className={author}>{comment.name}</div>
                 <div className={cushion}>{formatTimestamp(comment.timestamp)}</div>

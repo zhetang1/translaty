@@ -77,7 +77,11 @@ export function fetchAndHandleReplies (questionId) {
         fetchReplies(questionId, getState().users.ddbDocClient)
             .then((response) => {
                 const replies = {};
-                response.Items.forEach( (x) => { replies[x.username_timestamp] = x.text });
+                response.Items.forEach( (x) => { replies[x.username_timestamp] = {
+                    'name': x.user,
+                    'timestamp': x.timestamp,
+                    'reply': x.text,
+                    } });
                 dispatch(fetchingRepliesSuccess(questionId, replies))
             })
             .catch((error) => dispatch(fetchingRepliesError(error)))
