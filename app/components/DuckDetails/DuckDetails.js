@@ -5,7 +5,6 @@ import {
     replyTextAreaContainer, replyTextArea } from './styles.css'
 import { subHeader, darkBtn, errorMsg } from 'sharedStyles/styles.css'
 import { DuckContainer, RepliesContainer } from 'containers'
-import { formatReply } from 'helpers/utils'
 
 function Reply ({submit}) {
     function handleSubmit (e) {
@@ -32,14 +31,13 @@ function Reply ({submit}) {
 }
 
 DuckDetails.propTypes = {
-    authedUser: PropTypes.object.isRequired,
     duckId: PropTypes.string.isRequired,
     isFetching: PropTypes.bool.isRequired,
     error: PropTypes.string.isRequired,
-    addAndHandleReply: PropTypes.func.isRequired,
+    handleSubmit: PropTypes.func.isRequired,
 };
 
-export default function DuckDetails ({duckId, isFetching, authedUser, error, addAndHandleReply}) {
+export default function DuckDetails ({duckId, isFetching, error, handleSubmit}) {
     return (
         <div className={mainContainer}>
             {isFetching === true
@@ -47,7 +45,7 @@ export default function DuckDetails ({duckId, isFetching, authedUser, error, add
                 : <div className={container}>
                 <div className={content}>
                     <DuckContainer duckId={duckId} hideLikeCount={false} hideReplyBtn={true} />
-                    <Reply submit={(replyText) => addAndHandleReply(duckId, formatReply(authedUser, replyText))} />
+                    <Reply submit={handleSubmit} />
                 </div>
                 <div className={repliesContainer}>
                     <RepliesContainer duckId={duckId} />

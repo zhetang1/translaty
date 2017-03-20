@@ -54,13 +54,13 @@ function fetchingRepliesSuccess (duckId, replies) {
     }
 }
 
-export function addAndHandleReply (duckId, reply) {
+export function addAndHandleReply (questionId, reply) {
     return function (dispatch) {
-        const { replyWithId, replyPromise } = postReply(duckId, reply);
+        const { replyWithId, replyPromise } = postReply(questionId, reply);
 
-        dispatch(addReply(duckId, replyWithId));
+        dispatch(addReply(questionId, replyWithId));
         replyPromise.catch((error) => {
-            dispatch(removeReply(duckId, replyWithId.replyId));
+            dispatch(removeReply(questionId, replyWithId.replyId));
             dispatch(addReplyError(error))
         })
     }

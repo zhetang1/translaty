@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux'
 import * as duckActionCreators from 'redux/modules/ducks'
 import * as likeCountActionCreators from 'redux/modules/likeCount'
 import * as repliesActionCreators from 'redux/modules/replies'
+import { formatReply } from 'helpers/utils'
 
 const DuckDetailsContainer = React.createClass({
     propTypes: {
@@ -18,6 +19,20 @@ const DuckDetailsContainer = React.createClass({
         initLikeFetch: PropTypes.func.isRequired,
         addAndHandleReply: PropTypes.func.isRequired,
     },
+    contextTypes: {
+        router: PropTypes.object.isRequired,
+    },
+    handleSubmit (reply, e) {
+        if (Object.keys(this.props.authedUser).length === 0)
+        {
+            e.stopPropagation();
+            this.context.router.push('/auth')
+        }
+        else
+        {
+            this.props.addAndHandleReply(this.props.duckId, formatReply(this.props.authedUser, reply))
+        }
+    },
     componentDidMount () {
         this.props.initLikeFetch(this.props.duckId);
         if (this.props.duckAlreadyFetched === false) {
@@ -29,8 +44,7 @@ const DuckDetailsContainer = React.createClass({
     render () {
         return (
             <DuckDetails
-                addAndHandleReply={this.props.addAndHandleReply}
-                authedUser={this.props.authedUser}
+                handleSubmit={this.handleSubmit}
                 duckId={this.props.duckId}
                 isFetching={this.props.isFetching}
                 error={this.props.error}/>
