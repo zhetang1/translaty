@@ -38,22 +38,20 @@ function fetchingUserFailure(error) {
     }
 }
 
-export function fetchingUserSuccess(username, user, ddbDocClient, timestamp) {
+export function fetchingUserSuccess(username, user, ddbDocClient) {
     return {
         type: FETCHING_USER_SUCCESS,
         username,
         user,
         ddbDocClient,
-        timestamp,
+        timestamp: Date.now(),
     }
 }
 
 export function fetchAndHandleUser (username) {
-    return function (dispatch) {
+    return function (dispatch, getState) {
         dispatch(fetchingUser());
-        return fetchUser(username)
-            .then((user) => dispatch(fetchingUserSuccess(username, Date.now())))
-            .catch((error) => dispatch(fetchingUserFailure(error)))
+        return dispatch(fetchingUserSuccess(username, formatUserInfo(username), getState().users.ddbDocClient));
     }
 }
 
@@ -75,7 +73,7 @@ export function fetchAndHandleAuthedUser (username, pw) {
         return authenticateUser(username, pw)
             .then((result) => {
                 return dispatch(fetchingUserSuccess(username, formatUserInfo(username),
-                    createDdbDocClient(result), Date.now()))
+                    createDdbDocClient(result)))
         })
             .then((user) => dispatch(authUser(user.username, user.ddbDocClient)))
             .catch((error) => dispatch(fetchingUserFailure(error)))

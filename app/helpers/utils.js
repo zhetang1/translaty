@@ -54,3 +54,18 @@ export function formatReply(username, reply) {
 export function checkIfAuthed (store) {
     return store.getState().users.isAuthed === true
 }
+
+export function createQuestionsFromDdbResponse (response) {
+    const questions = response.Items.sort((a, b) => {
+        return b.timestamp - a.timestamp
+    });
+    const map = {};
+    const sortedIds = [];
+    questions.forEach( (x) => {
+        const id = x.username_timestamp;
+        map[id] = x;
+        sortedIds.push(id);
+    });
+
+    return {map, sortedIds}
+}

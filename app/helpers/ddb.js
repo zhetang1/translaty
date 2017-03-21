@@ -94,6 +94,28 @@ export function fetchReplies (questionId, ddbDocClient) {
     });
 }
 
+export function fetchUsersQuestions (user, ddbDocClient) {
+    const params = {
+        TableName : 'question',
+        IndexName: 'user-timestamp-index',
+        KeyConditionExpression: "#user = :user",
+        ExpressionAttributeNames:{
+            "#user": "user"
+        },
+        ExpressionAttributeValues: {
+            ":user": user
+        },
+        ScanIndexForward: false,
+    };
+
+    return new Promise(function (resolve, reject) {
+        ddbDocClient.query(params, function (err, data) {
+            if(err !== null) return reject(err);
+            resolve(data);
+        })
+    });
+}
+
 export function createReadOnlyDdbDocClient() {
     clearAwsConfig();
     AWS.config.region = region;
