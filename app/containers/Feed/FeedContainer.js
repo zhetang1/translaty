@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Feed } from 'components'
 import * as feedActionCreators from 'redux/modules/feed'
-import * as userActionCreators from 'redux/modules/users'
+import * as usersActionCreators from 'redux/modules/users'
 import * as usersLikesActionCreator from 'redux/modules/usersLikes'
 import { List } from 'immutable'
 import { retrievingCurrentUserFromLocalStorage, retrievingCurrentUserNameFromLocalStorage,
@@ -63,7 +63,7 @@ function mapStateToProps ({feed}) {
 function mapDispatchToProps (dispatch) {
     return bindActionCreators({
         ...feedActionCreators,
-        ...userActionCreators,
+        ...usersActionCreators,
         ...usersLikesActionCreator,
     }, dispatch)
 }
