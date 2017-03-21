@@ -47,6 +47,65 @@ export function postReply (questionId, replyId, reply, ddbDocClient) {
     }
 }
 
+export function saveToUsersLikes (user, questionId, ddbDocClient) {
+    const params = {
+        TableName: 'likedQuestions',
+        Item:{
+            'questionId': questionId,
+            'user': user,
+            'timestamp': Date.now(),
+        }
+    };
+
+    return new Promise(function (resolve, reject) {
+        ddbDocClient.put(params, function(err, data) {
+            if(err !== null) return reject(err);
+            resolve(data)
+        })
+    });
+}
+
+export function deleteFromUsersLikes (user, questionId, ddbDocClient) {
+    const params = {
+        TableName: 'likedQuestions',
+        Key:{
+            'questionId': questionId,
+            'user': user,
+        }
+    };
+
+    return new Promise(function (resolve, reject) {
+        ddbDocClient.delete(params, function(err, data) {
+            if(err !== null) return reject(err);
+            resolve(data)
+        })
+    });
+}
+
+export function incrementNumberOfLikes (questionId, ddbDocClient) {
+    return updateNumberOfLikes(questionId, ddbDocClient, 1);
+}
+
+export function decrementNumberOfLikes (questionId, ddbDocClient) {
+    return updateNumberOfLikes(questionId, ddbDocClient, -1);
+}
+
+function updateNumberOfLikes (questionId, ddbDocClient, increment) {
+    const params = {
+        TableName : 'question',
+        Key: { 'username_timestamp': questionId },
+        UpdateExpression: 'set likeCount = likeCount + :num',
+        ExpressionAttributeValues: {':num': increment},
+    };
+
+    return new Promise(function (resolve, reject) {
+        ddbDocClient.update(params, function (err, data) {
+            if(err !== null) return reject(err);
+            resolve(data);
+        })
+    });
+}
+
 export function listenToFeed (ddbDocClient) {
     const params = {
         TableName: 'question',
@@ -63,7 +122,7 @@ export function listenToFeed (ddbDocClient) {
 export function fetchQuestion (questionId, ddbDocClient) {
     const params = {
         TableName : 'question',
-        Key: { 'username_timestamp': questionId }
+        Key: { 'username_timestamp': questionId },
     };
 
     return new Promise(function (resolve, reject) {
@@ -106,6 +165,27 @@ export function fetchUsersQuestions (user, ddbDocClient) {
             ":user": user
         },
         ScanIndexForward: false,
+    };
+
+    return new Promise(function (resolve, reject) {
+        ddbDocClient.query(params, function (err, data) {
+            if(err !== null) return reject(err);
+            resolve(data);
+        })
+    });
+}
+
+export function fetchUsersLikes (user, ddbDocClient) {
+    const params = {
+        TableName : 'likedQuestions',
+        IndexName: 'user-index',
+        KeyConditionExpression: "#user = :user",
+        ExpressionAttributeNames:{
+            "#user": "user"
+        },
+        ExpressionAttributeValues: {
+            ":user": user
+        },
     };
 
     return new Promise(function (resolve, reject) {

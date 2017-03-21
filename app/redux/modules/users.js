@@ -1,4 +1,3 @@
-import { fetchUser } from 'helpers/api'
 import { signUp, confirmRegistration, authenticateUser, createDdbDocClient, logout } from 'helpers/cognito'
 import { createReadOnlyDdbDocClient, clearAwsConfig } from 'helpers/ddb'
 import { formatUserInfo } from 'helpers/utils'

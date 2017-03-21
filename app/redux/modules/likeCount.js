@@ -1,4 +1,4 @@
-import { fetchLikeCount } from 'helpers/api'
+import { fetchQuestion } from 'helpers/ddb'
 import { ADD_LIKE, REMOVE_LIKE } from './usersLikes'
 const FETCHING_COUNT = 'FETCHING_COUNT';
 const FETCHING_COUNT_ERROR = 'FETCHING_COUNT_ERROR';
@@ -25,12 +25,12 @@ function fetchingCountSuccess(duckId, count) {
     }
 }
 
-export function initLikeFetch(duckId) {
-    return function (dispatch) {
+export function initLikeFetch(questionId) {
+    return function (dispatch, getState) {
         dispatch(fetchingCount());
 
-        fetchLikeCount(duckId)
-            .then((count) => dispatch(fetchingCountSuccess(duckId, count)))
+        fetchQuestion(questionId, getState().users.ddbDocClient)
+            .then((response) => dispatch(fetchingCountSuccess(questionId, response.Item.likeCount)))
             .catch((error) => dispatch(fetchingCountError(error)))
     }
 }

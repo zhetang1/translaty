@@ -1,7 +1,5 @@
-import {
-fetchUsersLikes, saveToUsersLikes, deleteFromUsersLikes,
-incrementNumberOfLikes, decrementNumberOfLikes,
-} from 'helpers/api'
+import {saveToUsersLikes, deleteFromUsersLikes, incrementNumberOfLikes, decrementNumberOfLikes, fetchUsersLikes}
+from 'helpers/ddb'
 
 export const ADD_LIKE = 'ADD_LIKE';
 export const REMOVE_LIKE = 'REMOVE_LIKE';
@@ -16,6 +14,7 @@ function fetchingLikes() {
 }
 
 function fetchingLikeError(error) {
+    console.warn(error);
     return {
         type: FETCHING_LIKES_ERROR,
         error: 'Error fetching likes',
@@ -43,44 +42,49 @@ function removeLike(duckId) {
     }
 }
 
-export function addAndHandleLike(duckId, e) {
+export function addAndHandleLike(questionId, e) {
     e.stopPropagation();
     return function (dispatch, getState) {
-        dispatch(addLike(duckId));
-
-        const username = getState().users.authedId;
+        dispatch(addLike(questionId));
+        const users = getState().users;
+        const username = users.authedId;
+        const ddbDocClient = users.ddbDocClient;
         Promise.all([
-            saveToUsersLikes(username, duckId),
-            incrementNumberOfLikes(duckId)
+            saveToUsersLikes(username, questionId, ddbDocClient),
+            incrementNumberOfLikes(questionId, ddbDocClient)
         ]).catch((error) => {
             console.warn(error);
-            dispatch(removeLike(duckId))
+            dispatch(removeLike(questionId))
         })
     }
 }
 
-export function handleDeleteLike(duckId, e) {
+export function handleDeleteLike(questionId, e) {
     e.stopPropagation();
     return function (dispatch, getState) {
-        dispatch(removeLike(duckId));
-
-        const username = getState().users.authedId;
+        dispatch(removeLike(questionId));
+        const users = getState().users;
+        const ddbDocClient = users.ddbDocClient;
         Promise.all([
-            deleteFromUsersLikes(username, duckId),
-            decrementNumberOfLikes(duckId)
+            deleteFromUsersLikes(users.authedId, questionId, ddbDocClient),
+            decrementNumberOfLikes(questionId, ddbDocClient)
         ]).catch((error) => {
-            console.warn(error);
-            dispatch(addLike(duckId))
+            console.error(error);
+            dispatch(addLike(questionId))
         })
     }
 }
 
 export function setUsersLikes () {
     return function (dispatch, getState) {
-        const username = getState().users.authedId;
+        const users = getState().users;
         dispatch(fetchingLikes());
-        fetchUsersLikes(username)
-            .then((likes) => dispatch(fetchingLikeSuccess(likes)))
+        fetchUsersLikes(users.authedId, users.ddbDocClient)
+            .then((likes) => {
+                const map = {};
+                likes.Items.forEach((x) => map[x.questionId] = true);
+                dispatch(fetchingLikeSuccess(map))
+            })
             .catch((error) => dispatch(fetchingLikeError(e)))
     }
 }
