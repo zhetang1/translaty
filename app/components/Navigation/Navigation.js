@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
-import { container, navContainer, link } from './styles.css'
+import { container, navContainer } from './styles.css'
+import { link } from 'sharedStyles/styles.css'
 import { ModalContainer } from 'containers'
 
 Navigation.propTypes = ActionLinks.propTypes = NavLinks.propTypes = {
