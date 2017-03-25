@@ -6,7 +6,7 @@ import * as usersLikesActions from 'redux/modules/usersLikes'
 
 const { func, object, bool, number } = PropTypes;
 
-const DuckContainer = React.createClass({
+const QuestionContainer = React.createClass({
     propTypes: {
         question: object.isRequired,
         numberOfLikes: number,
@@ -60,4 +60,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(DuckContainer)
+)(QuestionContainer)

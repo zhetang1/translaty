@@ -12,7 +12,7 @@ import { retrievingCurrentUserFromLocalStorage, retrievingCurrentUserNameFromLoc
     createDdbDocClient } from 'helpers/cognito'
 import { formatUserInfo } from 'helpers/utils'
 
-const DuckDetailsContainer = React.createClass({
+const QuestionDetailsContainer = React.createClass({
     propTypes: {
         authedUser: PropTypes.object.isRequired,
         duckId: PropTypes.string.isRequired,
@@ -98,4 +98,4 @@ function mapDispatchToProps (dispatch) {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(DuckDetailsContainer)
+)(QuestionDetailsContainer)
