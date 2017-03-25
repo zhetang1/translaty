@@ -1,4 +1,5 @@
-import { signUp, confirmRegistration, authenticateUser, createDdbDocClient, logout } from 'helpers/cognito'
+import { signUp, resendConfirmationCode, confirmRegistration, authenticateUser, createDdbDocClient, logout,
+    retrievingCurrentUserFromLocalStorage, retrievingCurrentUserNameFromLocalStorage} from 'helpers/cognito'
 import { createReadOnlyDdbDocClient, clearAwsConfig } from 'helpers/ddb'
 import { formatUserInfo } from 'helpers/utils'
 
@@ -60,6 +61,12 @@ export function signUpNewUser (email, username, pw) {
     }
 }
 
+export function resendCode (username) {
+    return function () {
+        return resendConfirmationCode(username)
+    }
+}
+
 export function confirmUser (username, pw) {
     return function () {
         return confirmRegistration(username, pw)
@@ -73,7 +80,7 @@ export function fetchAndHandleAuthedUser (username, pw) {
             .then((result) => {
                 return dispatch(fetchingUserSuccess(username, formatUserInfo(username),
                     createDdbDocClient(result)))
-        })
+            })
             .then((user) => dispatch(authUser(user.username, user.ddbDocClient)))
             .catch((error) => dispatch(fetchingUserFailure(error)))
     }

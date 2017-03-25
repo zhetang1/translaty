@@ -85,7 +85,7 @@ export function setUsersLikes () {
                 likes.Items.forEach((x) => map[x.questionId] = true);
                 dispatch(fetchingLikeSuccess(map))
             })
-            .catch((error) => dispatch(fetchingLikeError(e)))
+            .catch((error) => dispatch(fetchingLikeError(error)))
     }
 }
 

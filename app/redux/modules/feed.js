@@ -54,15 +54,16 @@ export function setAndHandleFeedListener () {
         dispatch(addListener('feed'));
         dispatch(settingFeedListener());
 
-        listenToFeed(state.users.ddbDocClient).
-        then((response) => {
+        listenToFeed(state.users.ddbDocClient)
+            .then((response) => {
             const {map, sortedIds} = createQuestionsFromDdbResponse(response);
             dispatch(addMultipleDucks(map));
             initialFetch === true
                 ? dispatch(settingFeedListenerSuccess(sortedIds))
                 : dispatch(addNewDuckIdToFeed(sortedIds[0]));
             initialFetch = false
-        }, (error) => dispatch(settingFeedListenerError(error)))
+        })
+            .catch((error) => dispatch(settingFeedListenerError(error)))
     }
 }
 

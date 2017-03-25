@@ -23,6 +23,22 @@ export function signUp(email, username, pw) {
     });
 }
 
+export function resendConfirmationCode(username) {
+    const userData = {
+        Username: username,
+        Pool: userPool
+    };
+
+    const cognitoUser = new CognitoUser(userData);
+
+    return new Promise(function (resolve, reject) {
+        cognitoUser.resendConfirmationCode(function(err, data) {
+            if(err !== null) return reject(err);
+            resolve(data)
+        })
+    });
+}
+
 export function confirmRegistration(username, confirmationCode) {
     const userData = {
         Username: username,
