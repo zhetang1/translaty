@@ -43,9 +43,9 @@ const DuckContainer = React.createClass({
     },
 });
 
-function mapStateToProps ({ducks, likeCount, usersLikes}, props) {
+function mapStateToProps ({questions, likeCount, usersLikes}, props) {
     return {
-        question: ducks.get(props.duckId),
+        question: questions.get(props.duckId),
         hideLikeCount: props.hideLikeCount,
         hideReplyBtn: props.hideReplyBtn,
         isLiked: usersLikes[props.duckId] === true,

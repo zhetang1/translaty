@@ -36,23 +36,23 @@ export function removeFetching () {
     }
 }
 
-function addDuck (duck) {
+function addDuck (question) {
     return {
         type: ADD_DUCK,
-        duck,
+        question,
     }
 }
 
-export function duckFanout (duck) {
+export function duckFanout (question) {
     return function (dispatch, getState) {
         const users = getState().users;
         const username = users.authedId;
         const ddbDocClient = users.ddbDocClient;
-        const duckId = duck.name.concat('_', duck.timestamp);
-        duck.duckId = duckId;
-        saveQuestion(duckId, duck, ddbDocClient)
+        const duckId = question.name.concat('_', question.timestamp);
+        question.username_timestamp = duckId;
+        saveQuestion(duckId, question, ddbDocClient)
             .then(() => {
-                dispatch(addDuck(duck));
+                dispatch(addDuck(question));
                 dispatch(closeModal());
                 dispatch(addSingleUsersDuck(username, duckId))
             })

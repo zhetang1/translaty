@@ -1,7 +1,7 @@
 import { addListener } from 'redux/modules/listeners'
 import { listenToFeed } from 'helpers/ddb'
 import { createQuestionsFromDdbResponse } from 'helpers/utils'
-import { addMultipleDucks } from 'redux/modules/ducks'
+import { addMultipleDucks } from 'redux/modules/questions'
 import { fromJS } from 'immutable'
 
 const SETTING_FEED_LISTENER = 'SETTING_FEED_LISTENER';

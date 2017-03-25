@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { DuckDetails } from 'components'
 import { bindActionCreators } from 'redux'
-import * as duckActionCreators from 'redux/modules/ducks'
+import * as questionActionCreators from 'redux/modules/questions'
 import * as likeCountActionCreators from 'redux/modules/likeCount'
 import * as repliesActionCreators from 'redux/modules/replies'
 import * as userActionCreators from 'redux/modules/users'
@@ -75,19 +75,19 @@ const DuckDetailsContainer = React.createClass({
     },
 });
 
-function mapStateToProps({ducks, likeCount, users}, props) {
+function mapStateToProps({questions, likeCount, users}, props) {
     return {
-        isFetching: ducks.get('isFetching') || likeCount.isFetching,
-        error: ducks.get('error'),
+        isFetching: questions.get('isFetching') || likeCount.isFetching,
+        error: questions.get('error'),
         authedUser: users.authedId === '' ? {} : users[users.authedId].info,
         duckId: props.routeParams.duckId,
-        duckAlreadyFetched: !!ducks.get(props.routeParams.duckId)
+        duckAlreadyFetched: !!questions.get(props.routeParams.duckId)
     }
 }
 
 function mapDispatchToProps (dispatch) {
     return bindActionCreators({
-        ...duckActionCreators,
+        ...questionActionCreators,
         ...likeCountActionCreators,
         ...repliesActionCreators,
         ...userActionCreators,

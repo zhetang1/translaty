@@ -1,5 +1,5 @@
 import { fetchUsersQuestions } from 'helpers/ddb'
-import { addMultipleDucks } from 'redux/modules/ducks'
+import { addMultipleDucks } from 'redux/modules/questions'
 import { createQuestionsFromDdbResponse } from 'helpers/utils'
 
 const ADD_SINGLE_USERS_DUCK = 'ADD_SINGLE_USERS_DUCK';
