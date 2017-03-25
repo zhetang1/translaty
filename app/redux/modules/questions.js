@@ -1,6 +1,6 @@
 import { saveQuestion, fetchQuestion } from 'helpers/ddb'
 import { closeModal } from './modal'
-import { addSingleUsersDuck } from './usersDucks'
+import { addSingleUsersDuck } from './usersQuestions'
 import { Map } from 'immutable'
 
 const FETCHING_DUCK = 'FETCHING_DUCK';

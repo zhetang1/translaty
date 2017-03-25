@@ -3,7 +3,7 @@ import { User } from 'components'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as usersActionCreators from 'redux/modules/users'
-import * as usersDucksActionCreators from 'redux/modules/usersDucks'
+import * as usersQuestionsActionCreators from 'redux/modules/usersQuestions'
 import * as usersLikesActionCreator from 'redux/modules/usersLikes'
 import { staleUser, staleDucks } from 'helpers/utils'
 import { retrievingCurrentUserFromLocalStorage, retrievingCurrentUserNameFromLocalStorage,
@@ -80,7 +80,7 @@ function mapStateToProps ({users, usersDucks}, props) {
 function mapDispatchToProps (dispatch) {
     return bindActionCreators({
         ...usersActionCreators,
-        ...usersDucksActionCreators,
+        ...usersQuestionsActionCreators,
         ...usersLikesActionCreator,
     }, dispatch)
 }
