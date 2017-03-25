@@ -9,6 +9,7 @@ import * as usersLikesActionCreator from 'redux/modules/usersLikes'
 const MainContainer = React.createClass({
     propTypes: {
         isAuthed: PropTypes.bool.isRequired,
+        authedId: PropTypes.string.isRequired,
         authUser: PropTypes.func.isRequired,
         removeFetchingUser: PropTypes.func.isRequired,
         fetchingUserSuccess: PropTypes.func.isRequired,
@@ -25,7 +26,7 @@ const MainContainer = React.createClass({
             ? null
             :
             <div className={container}>
-                <Navigation isAuthed={this.props.isAuthed} />
+                <Navigation isAuthed={this.props.isAuthed} authedId={this.props.authedId} />
                 <div className={innerContainer}>
                     {this.props.children}
                 </div>
@@ -34,7 +35,7 @@ const MainContainer = React.createClass({
 });
 
 export default connect(
-    ({users}) => ({isAuthed: users.isAuthed, isFetching: users.isFetching}),
+    ({users}) => ({isAuthed: users.isAuthed, authedId: users.authedId, isFetching: users.isFetching}),
     (dispatch) => bindActionCreators({
         ...userActionCreators,
         ...usersLikesActionCreator

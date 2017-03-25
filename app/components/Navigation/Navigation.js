@@ -6,13 +6,15 @@ import { ModalContainer } from 'containers'
 
 Navigation.propTypes = ActionLinks.propTypes = NavLinks.propTypes = {
     isAuthed: PropTypes.bool.isRequired,
+    authedId: PropTypes.string.isRequired,
 };
 
-function NavLinks({isAuthed}) {
+function NavLinks({isAuthed, authedId}) {
     return isAuthed === true
         ? <ul>
-        <li><Link className={link} to="/">{'Home'}</Link></li>
-    </ul>
+            <li><Link className={link} to="/">{'Home'}</Link></li>
+            <li>{authedId}</li>
+        </ul>
         : null
 }
 
@@ -21,19 +23,19 @@ function ActionLinks({isAuthed}) {
         ? <ul>
         <li><ModalContainer /></li>
         <li><Link className={link} to="/logout">{'Logout'}</Link></li>
-    </ul>
+        </ul>
         : <ul>
         <li><Link className={link} to="/">{'Home'}</Link></li>
         <li><Link className={link} to="/auth">{'Authenticate'}</Link></li>
-    </ul>
+        </ul>
 }
 
-export default function Navigation ({isAuthed}) {
+export default function Navigation ({isAuthed, authedId}) {
     return (
         <div className={container}>
             <nav className={navContainer}>
-                <NavLinks isAuthed={isAuthed} />
-                <ActionLinks isAuthed={isAuthed} />
+                <NavLinks isAuthed={isAuthed} authedId={authedId} />
+                <ActionLinks isAuthed={isAuthed} authedId={authedId} />
             </nav>
         </div>
     )
