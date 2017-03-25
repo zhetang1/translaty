@@ -2,6 +2,7 @@ import { signUp, resendConfirmationCode, confirmRegistration, authenticateUser, 
     retrievingCurrentUserFromLocalStorage, retrievingCurrentUserNameFromLocalStorage} from 'helpers/cognito'
 import { createReadOnlyDdbDocClient, clearAwsConfig } from 'helpers/ddb'
 import { formatUserInfo } from 'helpers/utils'
+import { clearLike } from './usersLikes'
 
 const AUTH_USER = 'AUTH_USER';
 const UNAUTH_USER = 'UNAUTH_USER';
@@ -89,7 +90,8 @@ export function fetchAndHandleAuthedUser (username, pw) {
 export function logoutAndUnauth() {
     return function (dispatch) {
         logout();
-        dispatch(unauthUser())
+        dispatch(unauthUser());
+        dispatch(clearLike());
     }
 }
 

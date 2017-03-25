@@ -3,6 +3,7 @@ from 'helpers/ddb'
 
 export const ADD_LIKE = 'ADD_LIKE';
 export const REMOVE_LIKE = 'REMOVE_LIKE';
+const CLEAR_LIKE = 'CLEAR_LIKE';
 const FETCHING_LIKES = 'FETCHING_LIKES';
 const FETCHING_LIKES_ERROR = 'FETCHING_LIKES_ERROR';
 const FETCHING_LIKES_SUCCESS = 'FETCHING_LIKES_SUCCESS';
@@ -39,6 +40,12 @@ function removeLike(duckId) {
     return {
         type: REMOVE_LIKE,
         duckId,
+    }
+}
+
+export function clearLike() {
+    return {
+        type: CLEAR_LIKE,
     }
 }
 
@@ -96,6 +103,8 @@ const initialState = {
 
 export default function usersLikes (state = initialState, action) {
     switch (action.type) {
+        case CLEAR_LIKE :
+            return initialState;
         case FETCHING_LIKES :
             return {
                 ...state,
