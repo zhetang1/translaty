@@ -1,12 +1,12 @@
-.duckContainer {
-    composes: baseDuckContainer from 'sharedStyles/styles.css';
+.questionContainer {
+    composes: baseQuestionContainer from 'sharedStyles/styles.css';
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: flex-start;
 }
 
-.duckContainer:hover {
+.questionContainer:hover {
     background: #F1F1F1;
 }
 

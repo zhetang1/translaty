@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { DuckDetails } from 'components'
+import { QuestionDetails } from 'components'
 import { bindActionCreators } from 'redux'
 import * as questionActionCreators from 'redux/modules/questions'
 import * as likeCountActionCreators from 'redux/modules/likeCount'
@@ -18,7 +18,7 @@ const QuestionDetailsContainer = React.createClass({
         duckId: PropTypes.string.isRequired,
         isFetching: PropTypes.bool.isRequired,
         error: PropTypes.string.isRequired,
-        duckAlreadyFetched: PropTypes.bool.isRequired,
+        questionAlreadyFetched: PropTypes.bool.isRequired,
         removeFetching: PropTypes.func.isRequired,
         fetchAndHandleDuck: PropTypes.func.isRequired,
         initLikeFetch: PropTypes.func.isRequired,
@@ -58,7 +58,7 @@ const QuestionDetailsContainer = React.createClass({
             });
 
         this.props.initLikeFetch(this.props.duckId);
-        if (this.props.duckAlreadyFetched === false) {
+        if (this.props.questionAlreadyFetched === false) {
             this.props.fetchAndHandleDuck(this.props.duckId)
         } else {
             this.props.removeFetching()
@@ -66,7 +66,7 @@ const QuestionDetailsContainer = React.createClass({
     },
     render () {
         return (
-            <DuckDetails
+            <QuestionDetails
                 handleSubmit={this.handleSubmit}
                 duckId={this.props.duckId}
                 isFetching={this.props.isFetching}
@@ -81,7 +81,7 @@ function mapStateToProps({questions, likeCount, users}, props) {
         error: questions.get('error'),
         authedUser: users.authedId === '' ? {} : users[users.authedId].info,
         duckId: props.routeParams.duckId,
-        duckAlreadyFetched: !!questions.get(props.routeParams.duckId)
+        questionAlreadyFetched: !!questions.get(props.routeParams.duckId)
     }
 }
 

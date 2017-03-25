@@ -62,15 +62,15 @@ const UserContainer = React.createClass({
     }
 });
 
-function mapStateToProps ({users, usersDucks}, props) {
-    const specificUsersDucks = usersDucks[props.routeParams.username];
+function mapStateToProps ({users, usersQuestions}, props) {
+    const specificUsersDucks = usersQuestions[props.routeParams.username];
     const user = users[props.routeParams.username];
     const noUser = typeof user === 'undefined';
     return {
         noUser,
         name: noUser ? '' : user.info.name,
-        isFetching: users.isFetching || usersDucks.isFetching,
-        error: users.error || usersDucks.error,
+        isFetching: users.isFetching || usersQuestions.isFetching,
+        error: users.error || usersQuestions.error,
         duckIds: specificUsersDucks ? specificUsersDucks.duckIds : [],
         lastUpdatedUser: user ? user.lastUpdated : 0,
         lastUpdatedDucks: specificUsersDucks ? specificUsersDucks.lastUpdated : 0,

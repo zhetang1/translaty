@@ -1,11 +1,11 @@
-.newDuckContainer {
-    composes: baseDuckContainer from 'sharedStyles/styles.css';
+.newQuestionContainer {
+    composes: baseQuestionContainer from 'sharedStyles/styles.css';
     background: #4a90e2;
     color: #fff;
     text-align: center;
 }
 
-.newDuckContainer:hover {
+.newQuestionContainer:hover {
     background: #1877E6;
     color: #fff;
 }

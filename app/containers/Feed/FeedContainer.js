@@ -13,7 +13,7 @@ import { formatUserInfo } from 'helpers/utils'
 const FeedContainer = React.createClass({
     propTypes: {
         duckIds: PropTypes.instanceOf(List),
-        newDucksAvailable: PropTypes.bool.isRequired,
+        newQuestionsAvailable: PropTypes.bool.isRequired,
         error: PropTypes.string.isRequired,
         isFetching: PropTypes.bool.isRequired,
         setAndHandleFeedListener: PropTypes.func.isRequired,
@@ -42,7 +42,7 @@ const FeedContainer = React.createClass({
     render () {
         return (
             <Feed
-            newDucksAvailable={this.props.newDucksAvailable}
+            newQuestionsAvailable={this.props.newQuestionsAvailable}
             error={this.props.error}
             isFetching={this.props.isFetching}
             resetNewDucksAvailable={this.props.resetNewDucksAvailable}
@@ -53,7 +53,7 @@ const FeedContainer = React.createClass({
 
 function mapStateToProps ({feed}) {
     return {
-        newDucksAvailable: feed.get('newDucksAvailable'),
+        newQuestionsAvailable: feed.get('newQuestionsAvailable'),
         error: feed.get('error'),
         isFetching: feed.get('isFetching'),
         duckIds: feed.get('duckIds'),

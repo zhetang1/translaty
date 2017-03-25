@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import { userContainer, header } from './styles.css'
 import { errorMsg } from 'sharedStyles/styles.css'
-import { DuckContainer } from 'containers'
+import { QuestionContainer } from 'containers'
 
 User.propTypes = {
     noUser: PropTypes.bool.isRequired,
@@ -22,7 +22,7 @@ export default function User(props) {
                 <div>{props.name}</div>
             </div>
             {props.duckIds.map((id) => (
-                <DuckContainer
+                <QuestionContainer
                     duckId={id}
                     key={id} />
             ))}

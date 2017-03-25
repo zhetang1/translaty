@@ -25,12 +25,12 @@ Modal.propTypes = {
     openModal: func.isRequired,
     updateDuckText: func.isRequired,
     user: object.isRequired,
-    duckFanout: func.isRequired,
+    questionFanout: func.isRequired,
 };
 
 export default function Modal (props) {
     function submitDuck () {
-        props.duckFanout(formatDuck(props.duckText, props.user))
+        props.questionFanout(formatDuck(props.duckText, props.user))
     }
 
     return (

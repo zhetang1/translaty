@@ -4,7 +4,7 @@ import {
     mainContainer, container, content, repliesContainer,
     replyTextAreaContainer, replyTextArea } from './styles.css'
 import { subHeader, darkBtn, errorMsg } from 'sharedStyles/styles.css'
-import { DuckContainer, RepliesContainer } from 'containers'
+import { QuestionContainer, RepliesContainer } from 'containers'
 
 function Reply ({submit}) {
     function handleSubmit (e) {
@@ -30,21 +30,21 @@ function Reply ({submit}) {
     )
 }
 
-DuckDetails.propTypes = {
+QuestionDetails.propTypes = {
     duckId: PropTypes.string.isRequired,
     isFetching: PropTypes.bool.isRequired,
     error: PropTypes.string.isRequired,
     handleSubmit: PropTypes.func.isRequired,
 };
 
-export default function DuckDetails ({duckId, isFetching, error, handleSubmit}) {
+export default function QuestionDetails ({duckId, isFetching, error, handleSubmit}) {
     return (
         <div className={mainContainer}>
             {isFetching === true
                 ? <p className={subHeader}>{'Fetching'}</p>
                 : <div className={container}>
                 <div className={content}>
-                    <DuckContainer duckId={duckId} hideLikeCount={false} hideReplyBtn={true} />
+                    <QuestionContainer duckId={duckId} hideLikeCount={false} hideReplyBtn={true} />
                     <Reply submit={handleSubmit} />
                 </div>
                 <div className={repliesContainer}>

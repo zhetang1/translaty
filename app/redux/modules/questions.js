@@ -43,7 +43,7 @@ function addDuck (question) {
     }
 }
 
-export function duckFanout (question) {
+export function questionFanout (question) {
     return function (dispatch, getState) {
         const users = getState().users;
         const username = users.authedId;
@@ -57,7 +57,7 @@ export function duckFanout (question) {
                 dispatch(addSingleUsersDuck(username, duckId))
             })
             .catch((err) => {
-                console.warn('Error in duckFanout', err)
+                console.warn('Error in questionFanout', err)
             })
     }
 }

@@ -3,12 +3,12 @@ import { formatTimestamp } from 'helpers/utils'
 import Reply from 'react-icons/lib/fa/mail-reply'
 import Star from 'react-icons/lib/fa/star'
 import {
-duckContainer, contentContainer, avatar, actionContainer,
+questionContainer, contentContainer, avatar, actionContainer,
 header, text, likeReplyContainer, icon, likedIcon, author,
 } from './styles.css'
 import { Map } from 'immutable'
 
-Duck.propTypes = {
+Question.propTypes = {
     question: PropTypes.instanceOf(Map),
     onClick: PropTypes.func,
     isLiked: PropTypes.bool.isRequired,
@@ -20,12 +20,12 @@ Duck.propTypes = {
     goToProfile: PropTypes.func.isRequired,
 };
 
-export default function Duck (props) {
+export default function Question (props) {
     const startIcon = props.isLiked === true ? likedIcon : icon;
     const startFn = props.isLiked === true ? props.handleDeleteLike : props.addAndHandleLike;
     return (
         <div
-        className={duckContainer}
+        className={questionContainer}
         style={{cursor: props.hideReplyBtn === true ? 'default' : 'pointer'}}
         onClick={props.onClick}
         >

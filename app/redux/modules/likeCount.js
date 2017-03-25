@@ -13,7 +13,7 @@ function fetchingCount() {
 function fetchingCountError(error) {
     return {
         type: FETCHING_COUNT_ERROR,
-        error: 'Error fetching duck\'s like count',
+        error: 'Error fetching question\'s like count',
     }
 }
 

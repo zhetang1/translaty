@@ -69,7 +69,7 @@ export function setAndHandleFeedListener () {
 
 const initialState = fromJS({
     isFetching: false,
-    newDucksAvailable: false,
+    newQuestionsAvailable: false,
     newDucksToAdd: [],
     error: '',
     duckIds: [],
@@ -91,7 +91,7 @@ export default function feed (state = initialState, action) {
                 isFetching: false,
                 error: '',
                 duckIds: action.duckIds,
-                newDucksAvailable: false,
+                newQuestionsAvailable: false,
             });
         case ADD_NEW_DUCK_ID_TO_FEED :
             return state.merge({
@@ -101,7 +101,7 @@ export default function feed (state = initialState, action) {
             return state.merge({
                 duckIds: state.get('newDucksToAdd').concat(state.get('duckIds')),
                 newDucksToAdd: [],
-                newDucksAvailable: false,
+                newQuestionsAvailable: false,
             });
         default :
             return state

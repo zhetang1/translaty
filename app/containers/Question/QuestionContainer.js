@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Duck } from 'components'
+import { Question } from 'components'
 import * as usersLikesActions from 'redux/modules/usersLikes'
 
 const { func, object, bool, number } = PropTypes;
@@ -35,7 +35,7 @@ const QuestionContainer = React.createClass({
     },
     render () {
         return (
-            <Duck
+            <Question
             goToProfile={this.goToProfile}
             onClick={this.props.hideReplyBtn === true ? null : this.handleClick}
             {...this.props} />

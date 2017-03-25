@@ -2,7 +2,7 @@ import React from 'react'
 import { Router, Route, IndexRoute } from 'react-router'
 import {
     MainContainer, HomeContainer, AuthenticateContainer, ConfirmRegistrationContainer, FeedContainer,
-    LogoutContainer, UserContainer, DuckDetailsContainer } from 'containers'
+    LogoutContainer, UserContainer, QuestionDetailsContainer } from 'containers'
 
 export default function getRoutes (checkAuth, history) {
     return (
@@ -13,7 +13,7 @@ export default function getRoutes (checkAuth, history) {
                 <Route path='feed' component={FeedContainer} />
                 <Route path='logout' component={LogoutContainer} />
                 <Route path='/:username' component={UserContainer} onEnter={checkAuth} />
-                <Route path='/duckDetail/:duckId' component={DuckDetailsContainer} />
+                <Route path='/duckDetail/:duckId' component={QuestionDetailsContainer} />
                 <IndexRoute component={FeedContainer} onEnter={checkAuth}/>
             </Route>
         </Router>
