@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 import { centeredContainer, largeHeader, errorMsg, link } from 'sharedStyles/styles.css'
-import { Register, Login } from 'components'
+import { Register, Login, ForgotPassword } from 'components'
 import { Link } from 'react-router'
 
 Authenticate.propTypes = {
@@ -8,6 +8,7 @@ Authenticate.propTypes = {
     isFetching: PropTypes.bool.isRequired,
     onAuth: PropTypes.func.isRequired,
     onLogin: PropTypes.func.isRequired,
+    onForgot: PropTypes.func.isRequired,
 };
 
 function ConfirmRegistrationLinks() {
@@ -18,11 +19,12 @@ function ConfirmRegistrationLinks() {
     )
 }
 
-export default function Authenticate ({error, isFetching, onAuth, onLogin}) {
+export default function Authenticate ({error, isFetching, onAuth, onLogin, onForgot}) {
     return (
         <div className={centeredContainer}>
             <h1 className={largeHeader}>{'Authenticate'}</h1>
             <Login isFetching={isFetching} onAuth={onLogin} />
+            <ForgotPassword isFetching={isFetching} onAuth={onForgot} />
             <Register isFetching={isFetching} onAuth={onAuth} />
             <ConfirmRegistrationLinks />
             <p>

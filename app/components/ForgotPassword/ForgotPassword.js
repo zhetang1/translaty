@@ -4,24 +4,19 @@ Login.propTypes = {
     isFetching: PropTypes.bool.isRequired,
     onAuth: PropTypes.func.isRequired,
     username: PropTypes.string,
-    pw: PropTypes.string,
 };
 
 
-export default function Login ( {onAuth, username, pw} ) {
+export default function Login ( {onAuth, username} ) {
     return (
         <div className="col-sm-6 col-sm-offset-3">
-            <h1>{'Login'}</h1>
+            <h1>{'Reset password'}</h1>
             <form onSubmit={onAuth}>
                 <div className="form-group">
                     <label>User Name</label>
                     <input className="form-control" ref={(e) => username = e} placeholder="User Name"/>
                 </div>
-                <div className="form-group">
-                    <label>Password</label>
-                    <input type="password" className="form-control" placeholder="Password" ref={(e) => pw = e}/>
-                </div>
-                <button type="submit" className="btn btn-primary">{'Login'}</button>
+                <button type="submit" className="btn btn-primary">{'Reset'}</button>
             </form>
         </div>
     )

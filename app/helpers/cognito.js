@@ -56,11 +56,10 @@ export function confirmRegistration(username, confirmationCode) {
 }
 
 export function authenticateUser(username, password) {
-    const userData = {
+    const cognitoUser = new CognitoUser({
         Username: username,
         Pool: userPool
-    };
-    const cognitoUser = new CognitoUser(userData);
+    });
 
     const authenticationDetails = new AuthenticationDetails({
         Username: username,
@@ -69,6 +68,25 @@ export function authenticateUser(username, password) {
 
     return new Promise(function (resolve, reject) {
         cognitoUser.authenticateUser(authenticationDetails, {onSuccess: resolve, onFailure: reject,})
+    });
+}
+
+export function forgotPassword(username) {
+    const cognitoUser = new CognitoUser({
+        Username: username,
+        Pool: userPool
+    });
+    return new Promise(function (resolve, reject) {
+        cognitoUser.forgotPassword({
+            onSuccess: resolve,
+            onFailure: reject,
+            inputVerificationCode: function(data) {
+                console.log('Code sent to: ' + data);
+                const verificationCode = prompt('Please input verification code ', '');
+                const newPassword = prompt('Enter new password ', '');
+                cognitoUser.confirmPassword(verificationCode, newPassword, this);
+            }
+        })
     });
 }
 

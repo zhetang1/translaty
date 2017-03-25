@@ -1,5 +1,6 @@
-import { signUp, resendConfirmationCode, confirmRegistration, authenticateUser, createDdbDocClient, logout,
-    retrievingCurrentUserFromLocalStorage, retrievingCurrentUserNameFromLocalStorage} from 'helpers/cognito'
+import { signUp, resendConfirmationCode, confirmRegistration, authenticateUser, forgotPassword,
+createDdbDocClient, logout, retrievingCurrentUserFromLocalStorage, retrievingCurrentUserNameFromLocalStorage}
+from 'helpers/cognito'
 import { createReadOnlyDdbDocClient, clearAwsConfig } from 'helpers/ddb'
 import { formatUserInfo } from 'helpers/utils'
 import { clearLike } from './usersLikes'
@@ -71,6 +72,12 @@ export function resendCode (username) {
 export function confirmUser (username, pw) {
     return function () {
         return confirmRegistration(username, pw)
+    }
+}
+
+export function forgot (username) {
+    return function () {
+        return forgotPassword(username)
     }
 }
 
