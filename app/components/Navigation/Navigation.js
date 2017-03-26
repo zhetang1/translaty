@@ -14,6 +14,7 @@ function NavLinks({isAuthed, authedId}) {
         ? <ul>
             <li><Link className={link} to="/">{'Home'}</Link></li>
             <li>{authedId}</li>
+            <li><Link className={link} to="/contactUs">{'Contact Us'}</Link></li>
         </ul>
         : null
 }
@@ -21,12 +22,13 @@ function NavLinks({isAuthed, authedId}) {
 function ActionLinks({isAuthed}) {
     return isAuthed === true
         ? <ul>
-        <li><ModalContainer /></li>
-        <li><Link className={link} to="/logout">{'Logout'}</Link></li>
+            <li><ModalContainer /></li>
+            <li><Link className={link} to="/logout">{'Logout'}</Link></li>
         </ul>
         : <ul>
-        <li><Link className={link} to="/">{'Home'}</Link></li>
-        <li><Link className={link} to="/auth">{'Authenticate'}</Link></li>
+            <li><Link className={link} to="/">{'Home'}</Link></li>
+            <li><Link className={link} to="/auth">{'Authenticate'}</Link></li>
+            <li><Link className={link} to="/contactUs">{'Contact Us'}</Link></li>
         </ul>
 }
 

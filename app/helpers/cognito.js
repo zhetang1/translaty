@@ -127,5 +127,6 @@ export function createDdbDocClient(authenticateResult) {
 export function logout () {
     let cognitoUser = userPool.getCurrentUser();
     if(cognitoUser != null) cognitoUser.signOut();
-    AWS.config.credentials.clearCachedId();
+    const credentrials = AWS.config.credentials;
+    if (credentrials !== null) AWS.config.credentials.clearCachedId();
 }
