@@ -28,7 +28,7 @@ export default function User(props) {
             ))}
             {props.questionIds.length === 0
                 ? <p className={header}>
-                {`It looks like ${props.name.split(' ')[0]} hasn't made any ducks yet.`}
+                {`It looks like ${props.name.split(' ')[0]} hasn't asked any question yet.`}
             </p>
                 : null}
         </div>}

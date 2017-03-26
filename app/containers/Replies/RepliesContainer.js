@@ -37,8 +37,8 @@ const RepliesContainer = React.createClass({
 });
 
 function mapStateToProps(state, props) {
-    const duckRepliesInfo = state.replies[props.questionId] || {};
-    const { lastUpdated, replies } = duckRepliesInfo;
+    const questionRepliesInfo = state.replies[props.questionId] || {};
+    const { lastUpdated, replies } = questionRepliesInfo;
     return {
         isFetching: state.replies.isFetching,
         error: state.replies.error,
