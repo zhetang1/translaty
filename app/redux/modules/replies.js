@@ -95,7 +95,7 @@ const initialReply = {
     replyId: '',
 };
 
-function duckReplies (state = initialReply, action) {
+function questionReplies (state = initialReply, action) {
     switch (action.type) {
         case ADD_REPLY :
             return {
@@ -112,12 +112,12 @@ function duckReplies (state = initialReply, action) {
     }
 }
 
-const initialDuckState = {
+const initialQuestionState = {
     lastUpdated: Date.now(),
     replies: {},
 };
 
-function repliesAndLastUpated (state = initialDuckState, action) {
+function repliesAndLastUpdated (state = initialQuestionState, action) {
     switch (action.type) {
         case FETCHING_REPLIES_SUCCESS :
             return {
@@ -129,7 +129,7 @@ function repliesAndLastUpated (state = initialDuckState, action) {
         case REMOVE_REPLY :
             return {
                 ...state,
-                replies: duckReplies(state.replies, action),
+                replies: questionReplies(state.replies, action),
             };
         default :
             return state
@@ -162,7 +162,7 @@ export default function replies (state = initialState, action) {
                 ...state,
                 isFetching: false,
                 error: '',
-                [action.questionId]: repliesAndLastUpated(state[action.questionId], action),
+                [action.questionId]: repliesAndLastUpdated(state[action.questionId], action),
             };
         default :
             return state
