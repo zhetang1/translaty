@@ -71,8 +71,6 @@ function usersQuestions (state = initialUserQuestionsState, action) {
     }
 }
 
-
-
 const initialState = {
     isFetching: true,
     error: ''

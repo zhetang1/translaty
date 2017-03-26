@@ -18,7 +18,7 @@ const modalStyles = {
 
 const { object, string, func, bool } = PropTypes;
 Modal.propTypes = {
-    duckText: string.isRequired,
+    questionText: string.isRequired,
     closeModal: func.isRequired,
     isOpen: bool.isRequired,
     isSubmitDisabled: bool.isRequired,
@@ -30,7 +30,7 @@ Modal.propTypes = {
 
 export default function Modal (props) {
     function submitDuck () {
-        props.questionFanout(formatDuck(props.duckText, props.user))
+        props.questionFanout(formatDuck(props.questionText, props.user))
     }
 
     return (
@@ -47,7 +47,7 @@ export default function Modal (props) {
         <div className={newDuckInputContainer}>
           <textarea
               onChange={(e) => props.updateDuckText(e.target.value)}
-              value={props.duckText}
+              value={props.questionText}
               maxLength={140}
               type='text'
               className={newDuckInput}
