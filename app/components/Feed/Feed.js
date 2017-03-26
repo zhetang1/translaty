@@ -17,7 +17,7 @@ function NewQuestionsAvailable ({handleClick}) {
 }
 
 Feed.propTypes = {
-    duckIds: PropTypes.instanceOf(List),
+    questionIds: PropTypes.instanceOf(List),
     error: PropTypes.string.isRequired,
     isFetching: PropTypes.bool.isRequired,
     newQuestionsAvailable: PropTypes.bool.isRequired,
@@ -29,11 +29,11 @@ export default function Feed (props) {
         ? <h1 className={header}>{'Fetching'}</h1>
         : <div>
         {props.newQuestionsAvailable ? <NewQuestionsAvailable handleClick={props.resetNewDucksAvailable} /> : null}
-        {props.duckIds.size === 0
+        {props.questionIds.size === 0
             ? <p className={header}>{'This is unfortunate.'} <br /> {'It appears there are no questions yet'}</p>
             : null}
-        {props.duckIds.map((id) => (
-            <QuestionContainer duckId={id} key={id} />
+        {props.questionIds.map((id) => (
+            <QuestionContainer questionId={id} key={id} />
         ))}
         {props.error ? <p className={errorMsg}>{props.error}</p> : null}
     </div>

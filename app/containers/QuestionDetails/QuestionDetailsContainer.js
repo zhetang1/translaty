@@ -15,7 +15,7 @@ import { formatUserInfo } from 'helpers/utils'
 const QuestionDetailsContainer = React.createClass({
     propTypes: {
         authedUser: PropTypes.object.isRequired,
-        duckId: PropTypes.string.isRequired,
+        questionId: PropTypes.string.isRequired,
         isFetching: PropTypes.bool.isRequired,
         error: PropTypes.string.isRequired,
         questionAlreadyFetched: PropTypes.bool.isRequired,
@@ -39,7 +39,7 @@ const QuestionDetailsContainer = React.createClass({
         }
         else
         {
-            this.props.addAndHandleReply(this.props.duckId, formatReply(this.props.authedUser, reply))
+            this.props.addAndHandleReply(this.props.questionId, formatReply(this.props.authedUser, reply))
         }
     },
     componentDidMount () {
@@ -57,9 +57,9 @@ const QuestionDetailsContainer = React.createClass({
                 }
             });
 
-        this.props.initLikeFetch(this.props.duckId);
+        this.props.initLikeFetch(this.props.questionId);
         if (this.props.questionAlreadyFetched === false) {
-            this.props.fetchAndHandleQuestion(this.props.duckId)
+            this.props.fetchAndHandleQuestion(this.props.questionId)
         } else {
             this.props.removeFetching()
         }
@@ -68,7 +68,7 @@ const QuestionDetailsContainer = React.createClass({
         return (
             <QuestionDetails
                 handleSubmit={this.handleSubmit}
-                duckId={this.props.duckId}
+                questionId={this.props.questionId}
                 isFetching={this.props.isFetching}
                 error={this.props.error}/>
         )
@@ -80,8 +80,8 @@ function mapStateToProps({questions, likeCount, users}, props) {
         isFetching: questions.get('isFetching') || likeCount.isFetching,
         error: questions.get('error'),
         authedUser: users.authedId === '' ? {} : users[users.authedId].info,
-        duckId: props.routeParams.duckId,
-        questionAlreadyFetched: !!questions.get(props.routeParams.duckId)
+        questionId: props.routeParams.questionId,
+        questionAlreadyFetched: !!questions.get(props.routeParams.questionId)
     }
 }
 

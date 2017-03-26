@@ -17,10 +17,10 @@ function fetchingCountError(error) {
     }
 }
 
-function fetchingCountSuccess(duckId, count) {
+function fetchingCountSuccess(questionId, count) {
     return {
         type: FETCHING_COUNT_SUCCESS,
-        duckId,
+        questionId,
         count,
     }
 }
@@ -68,15 +68,15 @@ export default function likeCounts (state = initialState, action) {
             return {
                 ...state,
                 ...initialState,
-                [action.duckId] : action.count,
+                [action.questionId] : action.count,
             };
         case ADD_LIKE :
         case REMOVE_LIKE :
-            return typeof state[action.duckId] === 'undefined'
+            return typeof state[action.questionId] === 'undefined'
                 ? state
                 : {
                 ...state,
-                [action.duckId]: count(state[action.duckId], action),
+                [action.questionId]: count(state[action.questionId], action),
             };
         default :
             return state

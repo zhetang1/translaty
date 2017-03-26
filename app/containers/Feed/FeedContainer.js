@@ -12,7 +12,7 @@ import { formatUserInfo } from 'helpers/utils'
 
 const FeedContainer = React.createClass({
     propTypes: {
-        duckIds: PropTypes.instanceOf(List),
+        questionIds: PropTypes.instanceOf(List),
         newQuestionsAvailable: PropTypes.bool.isRequired,
         error: PropTypes.string.isRequired,
         isFetching: PropTypes.bool.isRequired,
@@ -46,7 +46,7 @@ const FeedContainer = React.createClass({
             error={this.props.error}
             isFetching={this.props.isFetching}
             resetNewDucksAvailable={this.props.resetNewDucksAvailable}
-            duckIds={this.props.duckIds} />
+            questionIds={this.props.questionIds} />
         )
     }
 });
@@ -56,7 +56,7 @@ function mapStateToProps ({feed}) {
         newQuestionsAvailable: feed.get('newQuestionsAvailable'),
         error: feed.get('error'),
         isFetching: feed.get('isFetching'),
-        duckIds: feed.get('duckIds'),
+        questionIds: feed.get('questionIds'),
     }
 }
 

@@ -16,8 +16,8 @@ const UserContainer = React.createClass({
         name: PropTypes.string.isRequired,
         isFetching: PropTypes.bool.isRequired,
         error: PropTypes.string.isRequired,
-        duckIds: PropTypes.array.isRequired,
-        fetchAndHandleUsersDucks: PropTypes.func.isRequired,
+        questionIds: PropTypes.array.isRequired,
+        fetchAndHandleUsersQuestions: PropTypes.func.isRequired,
         fetchAndHandleUser: PropTypes.func.isRequired,
         lastUpdatedUser: PropTypes.number.isRequired,
         lastUpdatedDucks: PropTypes.number.isRequired,
@@ -47,7 +47,7 @@ const UserContainer = React.createClass({
         }
 
         if (this.props.noUser === true || staleDucks(this.props.lastUpdatedDucks)) {
-            this.props.fetchAndHandleUsersDucks(username);
+            this.props.fetchAndHandleUsersQuestions(username);
         }
     },
     render () {
@@ -57,13 +57,13 @@ const UserContainer = React.createClass({
             name={this.props.name}
             isFetching={this.props.isFetching}
             error={this.props.error}
-            duckIds={this.props.duckIds} />
+            questionIds={this.props.questionIds} />
         )
     }
 });
 
 function mapStateToProps ({users, usersQuestions}, props) {
-    const specificUsersDucks = usersQuestions[props.routeParams.username];
+    const specificUsersQuestions = usersQuestions[props.routeParams.username];
     const user = users[props.routeParams.username];
     const noUser = typeof user === 'undefined';
     return {
@@ -71,9 +71,9 @@ function mapStateToProps ({users, usersQuestions}, props) {
         name: noUser ? '' : user.info.name,
         isFetching: users.isFetching || usersQuestions.isFetching,
         error: users.error || usersQuestions.error,
-        duckIds: specificUsersDucks ? specificUsersDucks.duckIds : [],
+        questionIds: specificUsersQuestions ? specificUsersQuestions.questionIds : [],
         lastUpdatedUser: user ? user.lastUpdated : 0,
-        lastUpdatedDucks: specificUsersDucks ? specificUsersDucks.lastUpdated : 0,
+        lastUpdatedDucks: specificUsersQuestions ? specificUsersQuestions.lastUpdated : 0,
     }
 }
 

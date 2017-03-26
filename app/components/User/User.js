@@ -8,7 +8,7 @@ User.propTypes = {
     name: PropTypes.string.isRequired,
     isFetching: PropTypes.bool.isRequired,
     error: PropTypes.string.isRequired,
-    duckIds: PropTypes.array.isRequired,
+    questionIds: PropTypes.array.isRequired,
 };
 
 export default function User(props) {
@@ -21,12 +21,12 @@ export default function User(props) {
             <div className={userContainer}>
                 <div>{props.name}</div>
             </div>
-            {props.duckIds.map((id) => (
+            {props.questionIds.map((id) => (
                 <QuestionContainer
-                    duckId={id}
+                    questionId={id}
                     key={id} />
             ))}
-            {props.duckIds.length === 0
+            {props.questionIds.length === 0
                 ? <p className={header}>
                 {`It looks like ${props.name.split(' ')[0]} hasn't made any ducks yet.`}
             </p>

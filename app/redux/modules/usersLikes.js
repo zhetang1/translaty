@@ -29,17 +29,17 @@ function fetchingLikeSuccess(likes) {
     }
 }
 
-function addLike(duckId) {
+function addLike(questionId) {
     return {
         type: ADD_LIKE,
-        duckId,
+        questionId,
     }
 }
 
-function removeLike(duckId) {
+function removeLike(questionId) {
     return {
         type: REMOVE_LIKE,
-        duckId,
+        questionId,
     }
 }
 
@@ -126,11 +126,11 @@ export default function usersLikes (state = initialState, action) {
         case ADD_LIKE :
             return {
                 ...state,
-                [action.duckId] :true,
+                [action.questionId] :true,
             };
         case REMOVE_LIKE :
             return Object.keys(state)
-                .filter((duckId) => action.duckId !== duckId)
+                .filter((questionId) => action.questionId !== questionId)
                 .reduce((prev, current) => {
                     prev[current] = state[current];
                     return prev

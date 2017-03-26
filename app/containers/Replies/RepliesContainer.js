@@ -11,7 +11,7 @@ const RepliesContainer = React.createClass({
         error: PropTypes.string.isRequired,
         lastUpdated: PropTypes.number.isRequired,
         replies: PropTypes.object.isRequired,
-        duckId: PropTypes.string.isRequired,
+        questionId: PropTypes.string.isRequired,
         fetchAndHandleReplies: PropTypes.func.isRequired,
     },
     getDefaultProps () {
@@ -22,7 +22,7 @@ const RepliesContainer = React.createClass({
     },
     componentDidMount () {
         if (staleReplies(this.props.lastUpdated)) {
-            this.props.fetchAndHandleReplies(this.props.duckId)
+            this.props.fetchAndHandleReplies(this.props.questionId)
         }
     },
     render () {
@@ -37,7 +37,7 @@ const RepliesContainer = React.createClass({
 });
 
 function mapStateToProps(state, props) {
-    const duckRepliesInfo = state.replies[props.duckId] || {};
+    const duckRepliesInfo = state.replies[props.questionId] || {};
     const { lastUpdated, replies } = duckRepliesInfo;
     return {
         isFetching: state.replies.isFetching,

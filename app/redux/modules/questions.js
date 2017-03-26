@@ -1,6 +1,6 @@
 import { saveQuestion, fetchQuestion } from 'helpers/ddb'
 import { closeModal } from './modal'
-import { addSingleUsersDuck } from './usersQuestions'
+import { addSingleUsersQuestion } from './usersQuestions'
 import { Map } from 'immutable'
 
 const FETCHING_QUESTION = 'FETCHING_QUESTION';
@@ -55,7 +55,7 @@ export function questionFanout (question) {
             .then(() => {
                 dispatch(addQuestion(question));
                 dispatch(closeModal());
-                dispatch(addSingleUsersDuck(username, questionId))
+                dispatch(addSingleUsersQuestion(username, questionId))
             })
             .catch((err) => {
                 console.warn('Error in questionFanout', err)

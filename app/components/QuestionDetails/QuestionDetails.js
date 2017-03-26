@@ -31,24 +31,24 @@ function Reply ({submit}) {
 }
 
 QuestionDetails.propTypes = {
-    duckId: PropTypes.string.isRequired,
+    questionId: PropTypes.string.isRequired,
     isFetching: PropTypes.bool.isRequired,
     error: PropTypes.string.isRequired,
     handleSubmit: PropTypes.func.isRequired,
 };
 
-export default function QuestionDetails ({duckId, isFetching, error, handleSubmit}) {
+export default function QuestionDetails ({questionId, isFetching, error, handleSubmit}) {
     return (
         <div className={mainContainer}>
             {isFetching === true
                 ? <p className={subHeader}>{'Fetching'}</p>
                 : <div className={container}>
                 <div className={content}>
-                    <QuestionContainer duckId={duckId} hideLikeCount={false} hideReplyBtn={true} />
+                    <QuestionContainer questionId={questionId} hideLikeCount={false} hideReplyBtn={true} />
                     <Reply submit={handleSubmit} />
                 </div>
                 <div className={repliesContainer}>
-                    <RepliesContainer duckId={duckId} />
+                    <RepliesContainer questionId={questionId} />
                 </div>
             </div>}
             {error ? <p className={errorMsg}>{error}</p> : null}

@@ -2,66 +2,69 @@ import { fetchUsersQuestions } from 'helpers/ddb'
 import { addMultipleQuestions } from 'redux/modules/questions'
 import { createQuestionsFromDdbResponse } from 'helpers/utils'
 
-const ADD_SINGLE_USERS_DUCK = 'ADD_SINGLE_USERS_DUCK';
-const FETCHING_USERS_DUCKS = 'FETCHING_USERS_DUCKS';
-const FETCHING_USERS_DUCKS_ERROR = 'FETCHING_USERS_DUCKS_ERROR';
-const FETCHING_USERS_DUCKS_SUCCESS = 'FETCHING_USERS_DUCKS_SUCCESS';
+const ADD_SINGLE_USERS_QUESTION = 'ADD_SINGLE_USERS_QUESTION';
+const FETCHING_USERS_QUESTIONS = 'FETCHING_USERS_QUESTIONS';
+const FETCHING_USERS_QUESTIONS_ERROR = 'FETCHING_USERS_QUESTIONS_ERROR';
+const FETCHING_USERS_QUESTIONS_SUCCESS = 'FETCHING_USERS_QUESTIONS_SUCCESS';
 
-function fetchingUsersDucks (username) {
+function fetchingUsersQuestions (username) {
     return {
-        type: FETCHING_USERS_DUCKS,
+        type: FETCHING_USERS_QUESTIONS,
         username,
     }
 }
 
-function fetchingUsersDucksError (error) {
+function fetchingUsersQuestionsError (error) {
     console.warn(error);
     return {
-        type: FETCHING_USERS_DUCKS_ERROR,
-        error: 'Error fetching Users Ducks Ids',
+        type: FETCHING_USERS_QUESTIONS_ERROR,
+        error: 'Error fetching Users Questions IDs',
     }
 }
 
-function fetchingUsersDucksSuccess (username, duckIds) {
+function fetchingUsersQuestionsSuccess (username, questionIds) {
     return {
-        type: FETCHING_USERS_DUCKS_SUCCESS,
+        type: FETCHING_USERS_QUESTIONS_SUCCESS,
         username,
-        duckIds,
+        questionIds,
         lastUpdated: Date.now(),
     }
 }
 
-export function addSingleUsersDuck (username, duckId) {
+export function addSingleUsersQuestion (username, questionId) {
     return {
-        type: ADD_SINGLE_USERS_DUCK,
+        type: ADD_SINGLE_USERS_QUESTION,
         username,
-        duckId,
+        questionId,
     }
 }
 
-export function fetchAndHandleUsersDucks(username) {
+export function fetchAndHandleUsersQuestions(username) {
     return function (dispatch, getState) {
-        dispatch(fetchingUsersDucks());
+        dispatch(fetchingUsersQuestions());
         fetchUsersQuestions(username, getState().users.ddbDocClient)
-            .then((response) => dispatch(addMultipleQuestions(createQuestionsFromDdbResponse(response).map)))
-            .then((response) => dispatch(fetchingUsersDucksSuccess(username, Object.keys(response.questions))))
-            .catch((error) => dispatch(fetchingUsersDucksError(error)))
+            .then((response) => {
+                const questionsFromDdbResponse = createQuestionsFromDdbResponse(response);
+                dispatch(addMultipleQuestions(questionsFromDdbResponse.map));
+                dispatch(fetchingUsersQuestionsSuccess(username, questionsFromDdbResponse.sortedIds))
+            })
+            .catch((error) => dispatch(fetchingUsersQuestionsError(error)))
     }
 }
 
-const initialUserDucksState = {
+const initialUserQuestionsState = {
     isFetching: true,
     error: '',
     lastUpdated: 0,
-    duckIds: [],
+    questionIds: [],
 };
 
-function usersDuck (state = initialUserDucksState, action) {
+function usersQuestions (state = initialUserQuestionsState, action) {
     switch (action.type) {
-        case ADD_SINGLE_USERS_DUCK :
+        case ADD_SINGLE_USERS_QUESTION :
             return {
                 ...state,
-                duckIds: state.duckIds.concat([action.duckId])
+                questionIds: state.questionIds.concat([action.questionId])
             };
         default :
             return state
@@ -75,37 +78,37 @@ const initialState = {
     error: ''
 };
 
-export default function usersDucks (state = initialState, action) {
+export default function usersQuestions (state = initialState, action) {
     switch (action.type) {
-        case FETCHING_USERS_DUCKS :
+        case FETCHING_USERS_QUESTIONS :
             return {
                 ...state,
                 isFetching: true,
             };
-        case FETCHING_USERS_DUCKS_ERROR :
+        case FETCHING_USERS_QUESTIONS_ERROR :
             return {
                 ...state,
                 isFetching: false,
                 error: action.error,
             };
-        case FETCHING_USERS_DUCKS_SUCCESS :
+        case FETCHING_USERS_QUESTIONS_SUCCESS :
             return {
                 ...state,
                 isFetching: false,
                 error: '',
                 [action.username]: {
                     lastUpdated: action.lastUpdated,
-                    duckIds: action.duckIds,
+                    questionIds: action.questionIds,
                 },
             };
-        case ADD_SINGLE_USERS_DUCK :
+        case ADD_SINGLE_USERS_QUESTION :
             return typeof state[action.username] === 'undefined'
                 ? state
                 : {
                     ...state,
                     isFetching: false,
                     error: '',
-                    [action.username]: usersDuck(state[action.username], action),
+                    [action.username]: usersQuestions(state[action.username], action),
                 };
         default :
             return state

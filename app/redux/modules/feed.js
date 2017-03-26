@@ -24,17 +24,17 @@ function settingFeedListenerError (error) {
     }
 }
 
-function settingFeedListenerSuccess (duckIds) {
+function settingFeedListenerSuccess (questionIds) {
     return {
         type: SETTING_FEED_LISTENER_SUCCESS,
-        duckIds,
+        questionIds,
     }
 }
 
-function addNewDuckIdToFeed (duckId) {
+function addNewDuckIdToFeed (questionId) {
     return {
         type: ADD_NEW_DUCK_ID_TO_FEED,
-        duckId,
+        questionId,
     }
 }
 
@@ -73,7 +73,7 @@ const initialState = fromJS({
     newQuestionsAvailable: false,
     newDucksToAdd: [],
     error: '',
-    duckIds: [],
+    questionIds: [],
 });
 
 export default function feed (state = initialState, action) {
@@ -91,16 +91,16 @@ export default function feed (state = initialState, action) {
             return state.merge({
                 isFetching: false,
                 error: '',
-                duckIds: action.duckIds,
+                questionIds: action.questionIds,
                 newQuestionsAvailable: false,
             });
         case ADD_NEW_DUCK_ID_TO_FEED :
             return state.merge({
-                newDucksToAdd: state.get('newDucksToAdd').unshift(action.duckId),
+                newDucksToAdd: state.get('newDucksToAdd').unshift(action.questionId),
             });
         case RESET_NEW_DUCKS_AVAILABLE :
             return state.merge({
-                duckIds: state.get('newDucksToAdd').concat(state.get('duckIds')),
+                questionIds: state.get('newDucksToAdd').concat(state.get('questionIds')),
                 newDucksToAdd: [],
                 newQuestionsAvailable: false,
             });

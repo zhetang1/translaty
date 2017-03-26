@@ -45,11 +45,11 @@ const QuestionContainer = React.createClass({
 
 function mapStateToProps ({questions, likeCount, usersLikes}, props) {
     return {
-        question: questions.get(props.duckId),
+        question: questions.get(props.questionId),
         hideLikeCount: props.hideLikeCount,
         hideReplyBtn: props.hideReplyBtn,
-        isLiked: usersLikes[props.duckId] === true,
-        numberOfLikes: likeCount[props.duckId],
+        isLiked: usersLikes[props.questionId] === true,
+        numberOfLikes: likeCount[props.questionId],
     }
 }
 

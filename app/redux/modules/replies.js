@@ -7,10 +7,10 @@ const ADD_REPLY = 'ADD_REPLY';
 const ADD_REPLY_ERROR = 'ADD_REPLY_ERROR';
 const REMOVE_REPLY = 'REMOVE_REPLY';
 
-function addReply (duckId, reply) {
+function addReply (questionId, reply) {
     return {
         type: ADD_REPLY,
-        duckId,
+        questionId,
         reply,
     }
 }
@@ -23,10 +23,10 @@ function addReplyError (error) {
     }
 }
 
-function removeReply (duckId, replyId) {
+function removeReply (questionId, replyId) {
     return {
         type: REMOVE_REPLY,
-        duckId,
+        questionId,
         replyId,
     }
 }
@@ -45,11 +45,11 @@ function fetchingRepliesError (error) {
     }
 }
 
-function fetchingRepliesSuccess (duckId, replies) {
+function fetchingRepliesSuccess (questionId, replies) {
     return {
         type: FETCHING_REPLIES_SUCCESS,
         replies,
-        duckId,
+        questionId,
         lastUpdated: Date.now(),
     }
 }
@@ -162,7 +162,7 @@ export default function replies (state = initialState, action) {
                 ...state,
                 isFetching: false,
                 error: '',
-                [action.duckId]: repliesAndLastUpated(state[action.duckId], action),
+                [action.questionId]: repliesAndLastUpated(state[action.questionId], action),
             };
         default :
             return state
