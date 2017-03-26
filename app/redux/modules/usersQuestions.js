@@ -1,5 +1,5 @@
 import { fetchUsersQuestions } from 'helpers/ddb'
-import { addMultipleDucks } from 'redux/modules/questions'
+import { addMultipleQuestions } from 'redux/modules/questions'
 import { createQuestionsFromDdbResponse } from 'helpers/utils'
 
 const ADD_SINGLE_USERS_DUCK = 'ADD_SINGLE_USERS_DUCK';
@@ -43,8 +43,8 @@ export function fetchAndHandleUsersDucks(username) {
     return function (dispatch, getState) {
         dispatch(fetchingUsersDucks());
         fetchUsersQuestions(username, getState().users.ddbDocClient)
-            .then((response) => dispatch(addMultipleDucks(createQuestionsFromDdbResponse(response).map)))
-            .then((response) => dispatch(fetchingUsersDucksSuccess(username, Object.keys(response.ducks))))
+            .then((response) => dispatch(addMultipleQuestions(createQuestionsFromDdbResponse(response).map)))
+            .then((response) => dispatch(fetchingUsersDucksSuccess(username, Object.keys(response.questions))))
             .catch((error) => dispatch(fetchingUsersDucksError(error)))
     }
 }

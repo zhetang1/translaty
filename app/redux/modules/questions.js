@@ -3,29 +3,30 @@ import { closeModal } from './modal'
 import { addSingleUsersDuck } from './usersQuestions'
 import { Map } from 'immutable'
 
-const FETCHING_DUCK = 'FETCHING_DUCK';
-const ADD_DUCK = 'ADD_DUCK';
-const FETCHING_DUCK_SUCCESS = 'FETCHING_DUCK_SUCCESS';
-const FETCHING_DUCK_ERROR = 'FETCHING_DUCK_ERROR';
+const FETCHING_QUESTION = 'FETCHING_QUESTION';
+const ADD_QUESTION = 'ADD_QUESTION';
+const FETCHING_QUESTION_SUCCESS = 'FETCHING_QUESTION_SUCCESS';
+const FETCHING_QUESTION_ERROR = 'FETCHING_QUESTION_ERROR';
 const REMOVE_FETCHING = 'REMOVE_FETCHING';
-const ADD_MULTIPLE_DUCKS = 'ADD_MULTIPLE_DUCKS';
+const ADD_MULTIPLE_QUESTIONS = 'ADD_MULTIPLE_QUESTIONS';
 
-function fetchingDuck () {
+function fetchingQuestion () {
     return {
-        type: FETCHING_DUCK,
+        type: FETCHING_QUESTION,
     }
 }
 
-function fetchingDuckError (error) {
+function fetchingQuestionError (error) {
+    console.warn(error);
     return {
-        type: FETCHING_DUCK_ERROR,
-        error: 'Error fetching Duck',
+        type: FETCHING_QUESTION_ERROR,
+        error: 'Error fetching Question',
     }
 }
 
-function fetchingDuckSuccess (question) {
+function fetchingQuestionSuccess (question) {
     return {
-        type: FETCHING_DUCK_SUCCESS,
+        type: FETCHING_QUESTION_SUCCESS,
         question,
     }
 }
@@ -36,9 +37,9 @@ export function removeFetching () {
     }
 }
 
-function addDuck (question) {
+function addQuestion (question) {
     return {
-        type: ADD_DUCK,
+        type: ADD_QUESTION,
         question,
     }
 }
@@ -48,13 +49,13 @@ export function questionFanout (question) {
         const users = getState().users;
         const username = users.authedId;
         const ddbDocClient = users.ddbDocClient;
-        const duckId = question.name.concat('_', question.timestamp);
-        question.username_timestamp = duckId;
-        saveQuestion(duckId, question, ddbDocClient)
+        const questionId = question.name.concat('_', question.timestamp);
+        question.username_timestamp = questionId;
+        saveQuestion(questionId, question, ddbDocClient)
             .then(() => {
-                dispatch(addDuck(question));
+                dispatch(addQuestion(question));
                 dispatch(closeModal());
-                dispatch(addSingleUsersDuck(username, duckId))
+                dispatch(addSingleUsersDuck(username, questionId))
             })
             .catch((err) => {
                 console.warn('Error in questionFanout', err)
@@ -62,21 +63,21 @@ export function questionFanout (question) {
     }
 }
 
-export function addMultipleDucks (ducks) {
+export function addMultipleQuestions (questions) {
     return {
-        type: ADD_MULTIPLE_DUCKS,
-        ducks,
+        type: ADD_MULTIPLE_QUESTIONS,
+        questions,
     }
 }
 
-export function fetchAndHandleDuck (questionId) {
+export function fetchAndHandleQuestion (questionId) {
     return function (dispatch, getState) {
-        dispatch(fetchingDuck());
+        dispatch(fetchingQuestion());
         fetchQuestion(questionId, getState().users.ddbDocClient)
             .then((response) => {
-                dispatch(fetchingDuckSuccess(response.Item))
+                dispatch(fetchingQuestionSuccess(response.Item))
             })
-            .catch((error) => dispatch(fetchingDuckError(error)))
+            .catch((error) => dispatch(fetchingQuestionError(error)))
     }
 }
 
@@ -85,20 +86,20 @@ const initialState = Map({
     error: ''
 });
 
-export default function ducks (state = initialState, action) {
+export default function questions (state = initialState, action) {
     switch (action.type) {
-        case FETCHING_DUCK :
+        case FETCHING_QUESTION :
             return state.merge({
                 isFetching: true,
             });
-        case ADD_DUCK :
-        case FETCHING_DUCK_SUCCESS :
+        case ADD_QUESTION :
+        case FETCHING_QUESTION_SUCCESS :
             return state.merge({
                 error: '',
                 isFetching: false,
                 [action.question.username_timestamp]: action.question,
             });
-        case FETCHING_DUCK_ERROR :
+        case FETCHING_QUESTION_ERROR :
             return state.merge({
                 isFetching: false,
                 error: action.error,
@@ -108,8 +109,8 @@ export default function ducks (state = initialState, action) {
                 isFetching: false,
                 error: '',
             });
-        case ADD_MULTIPLE_DUCKS :
-            return state.merge(action.ducks);
+        case ADD_MULTIPLE_QUESTIONS :
+            return state.merge(action.questions);
         default :
             return state
     }

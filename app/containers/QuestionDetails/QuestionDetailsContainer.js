@@ -20,7 +20,7 @@ const QuestionDetailsContainer = React.createClass({
         error: PropTypes.string.isRequired,
         questionAlreadyFetched: PropTypes.bool.isRequired,
         removeFetching: PropTypes.func.isRequired,
-        fetchAndHandleDuck: PropTypes.func.isRequired,
+        fetchAndHandleQuestion: PropTypes.func.isRequired,
         initLikeFetch: PropTypes.func.isRequired,
         addAndHandleReply: PropTypes.func.isRequired,
         authUser: PropTypes.func.isRequired,
@@ -59,7 +59,7 @@ const QuestionDetailsContainer = React.createClass({
 
         this.props.initLikeFetch(this.props.duckId);
         if (this.props.questionAlreadyFetched === false) {
-            this.props.fetchAndHandleDuck(this.props.duckId)
+            this.props.fetchAndHandleQuestion(this.props.duckId)
         } else {
             this.props.removeFetching()
         }

@@ -1,7 +1,7 @@
 import { addListener } from 'redux/modules/listeners'
 import { listenToFeed } from 'helpers/ddb'
 import { createQuestionsFromDdbResponse } from 'helpers/utils'
-import { addMultipleDucks } from 'redux/modules/questions'
+import { addMultipleQuestions } from 'redux/modules/questions'
 import { fromJS } from 'immutable'
 
 const SETTING_FEED_LISTENER = 'SETTING_FEED_LISTENER';
@@ -17,6 +17,7 @@ function settingFeedListener () {
 }
 
 function settingFeedListenerError (error) {
+    console.warn(error);
     return {
         type: SETTING_FEED_LISTENER_ERROR,
         error: 'Error fetching feeds.',
@@ -57,7 +58,7 @@ export function setAndHandleFeedListener () {
         listenToFeed(state.users.ddbDocClient)
             .then((response) => {
             const {map, sortedIds} = createQuestionsFromDdbResponse(response);
-            dispatch(addMultipleDucks(map));
+            dispatch(addMultipleQuestions(map));
             initialFetch === true
                 ? dispatch(settingFeedListenerSuccess(sortedIds))
                 : dispatch(addNewDuckIdToFeed(sortedIds[0]));
