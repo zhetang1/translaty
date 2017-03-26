@@ -105,7 +105,7 @@ export default function usersDucks (state = initialState, action) {
                     ...state,
                     isFetching: false,
                     error: '',
-                    [action.username]: usersDuck(state[action.username]),
+                    [action.username]: usersDuck(state[action.username], action),
                 };
         default :
             return state
