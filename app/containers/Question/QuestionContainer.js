@@ -31,7 +31,7 @@ const QuestionContainer = React.createClass({
     },
     handleClick (e) {
         e.stopPropagation();
-        this.context.router.push('/duckDetail/' + this.props.question.get('username_timestamp'))
+        this.context.router.push('/questionDetail/' + this.props.question.get('username_timestamp'))
     },
     render () {
         return (
