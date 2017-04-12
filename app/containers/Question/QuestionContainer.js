@@ -17,7 +17,7 @@ const QuestionContainer = React.createClass({
         addAndHandleLike: func.isRequired,
     },
     contextTypes: {
-        router: PropTypes.object.isRequired,
+        router: object.isRequired,
     },
     getDefaultProps () {
         return {
@@ -27,7 +27,7 @@ const QuestionContainer = React.createClass({
     },
     goToProfile (e) {
         e.stopPropagation();
-        this.context.router.push('/' + this.props.question.get('user'))
+        this.context.router.push('/user/' + this.props.question.get('user'))
     },
     handleClick (e) {
         e.stopPropagation();

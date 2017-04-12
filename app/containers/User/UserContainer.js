@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'
 import * as usersActionCreators from 'redux/modules/users'
 import * as usersQuestionsActionCreators from 'redux/modules/usersQuestions'
 import * as usersLikesActionCreator from 'redux/modules/usersLikes'
-import { staleUser, staleDucks } from 'helpers/utils'
+import { staleUser, staleQuestions } from 'helpers/utils'
 import { retrievingCurrentUserFromLocalStorage, retrievingCurrentUserNameFromLocalStorage,
     createDdbDocClient } from 'helpers/cognito'
 import { formatUserInfo } from 'helpers/utils'
@@ -20,7 +20,7 @@ const UserContainer = React.createClass({
         fetchAndHandleUsersQuestions: PropTypes.func.isRequired,
         fetchAndHandleUser: PropTypes.func.isRequired,
         lastUpdatedUser: PropTypes.number.isRequired,
-        lastUpdatedDucks: PropTypes.number.isRequired,
+        lastUpdatedQuestions: PropTypes.number.isRequired,
         authUser: PropTypes.func.isRequired,
         setUsersLikes: PropTypes.func.isRequired,
         fetchingUserSuccess: PropTypes.func.isRequired,
@@ -46,7 +46,7 @@ const UserContainer = React.createClass({
             this.props.fetchAndHandleUser(username);
         }
 
-        if (this.props.noUser === true || staleDucks(this.props.lastUpdatedDucks)) {
+        if (this.props.noUser === true || staleQuestions(this.props.lastUpdatedQuestions)) {
             this.props.fetchAndHandleUsersQuestions(username);
         }
     },
@@ -73,7 +73,7 @@ function mapStateToProps ({users, usersQuestions}, props) {
         error: users.error || usersQuestions.error,
         questionIds: specificUsersQuestions ? specificUsersQuestions.questionIds : [],
         lastUpdatedUser: user ? user.lastUpdated : 0,
-        lastUpdatedDucks: specificUsersQuestions ? specificUsersQuestions.lastUpdated : 0,
+        lastUpdatedQuestions: specificUsersQuestions ? specificUsersQuestions.lastUpdated : 0,
     }
 }
 

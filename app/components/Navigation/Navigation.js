@@ -14,6 +14,7 @@ function NavLinks({isAuthed, authedId}) {
         ? <ul>
             <li><Link className={link} to="/">{'Home'}</Link></li>
             <li>{authedId}</li>
+            {/*<li><Link className={link} to="/search">{'Search'}</Link></li>*/}
             <li><Link className={link} to="/contactUs">{'Contact Us'}</Link></li>
         </ul>
         : null
@@ -28,6 +29,7 @@ function ActionLinks({isAuthed}) {
         : <ul>
             <li><Link className={link} to="/">{'Home'}</Link></li>
             <li><Link className={link} to="/auth">{'Authenticate'}</Link></li>
+            {/*<li><Link className={link} to="/search">{'Search'}</Link></li>*/}
             <li><Link className={link} to="/contactUs">{'Contact Us'}</Link></li>
         </ul>
 }

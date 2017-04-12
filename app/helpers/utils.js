@@ -1,4 +1,4 @@
-import { usersDucksExpirationLength, userExpirationLength, repliesExpirationLength } from 'config/constants'
+import { usersQuestionsExpirationLength, userExpirationLength, repliesExpirationLength } from 'config/constants'
 
 export function formatUserInfoFromFireBase (name, avatar, uid) {
     return {
@@ -14,7 +14,7 @@ export function formatUserInfo (name) {
     }
 }
 
-export function formatDuck (text, {name}) {
+export function formatQuestion (text, {name}) {
     return {
         text,
         name,
@@ -32,11 +32,11 @@ function getMilliseconds (timestamp) {
 }
 
 export function staleUser (timestamp) {
-    return getMilliseconds(timestamp) > usersDucksExpirationLength
+    return getMilliseconds(timestamp) > userExpirationLength
 }
 
-export function staleDucks (timestamp) {
-    return getMilliseconds(timestamp) > userExpirationLength
+export function staleQuestions (timestamp) {
+    return getMilliseconds(timestamp) > usersQuestionsExpirationLength
 }
 
 export function staleReplies (timestamp) {

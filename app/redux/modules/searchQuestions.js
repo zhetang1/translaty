@@ -1,67 +1,68 @@
-import { fetchUsersQuestions } from 'helpers/ddb'
+import { search } from 'helpers/es'
 import { addMultipleQuestions } from 'redux/modules/questions'
 import { createQuestionsFromDdbResponse } from 'helpers/utils'
 
-const ADD_SINGLE_USERS_QUESTION = 'ADD_SINGLE_USERS_QUESTION';
-const FETCHING_USERS_QUESTIONS = 'FETCHING_USERS_QUESTIONS';
-const FETCHING_USERS_QUESTIONS_ERROR = 'FETCHING_USERS_QUESTIONS_ERROR';
-const FETCHING_USERS_QUESTIONS_SUCCESS = 'FETCHING_USERS_QUESTIONS_SUCCESS';
+const ADD_SINGLE_SEARCH_QUESTION = 'ADD_SINGLE_SEARCH_QUESTION';
+const FETCHING_SEARCH_QUESTIONS = 'FETCHING_SEARCH_QUESTIONS';
+const FETCHING_SEARCH_QUESTIONS_ERROR = 'FETCHING_SEARCH_QUESTIONS_ERROR';
+const FETCHING_SEARCH_QUESTIONS_SUCCESS = 'FETCHING_SEARCH_QUESTIONS_SUCCESS';
 
-function fetchingUsersQuestions (username) {
+function fetchingSearchQuestions (username) {
     return {
-        type: FETCHING_USERS_QUESTIONS,
+        type: FETCHING_SEARCH_QUESTIONS,
         username,
     }
 }
 
-function fetchingUsersQuestionsError (error) {
+function fetchingSearchQuestionsError (error) {
     console.warn(error);
     return {
-        type: FETCHING_USERS_QUESTIONS_ERROR,
-        error: 'Error fetching Users Questions IDs',
+        type: FETCHING_SEARCH_QUESTIONS_ERROR,
+        error: 'Error searching Questions',
     }
 }
 
-function fetchingUsersQuestionsSuccess (username, questionIds) {
+function fetchingSearchQuestionsSuccess (phrase, questionIds) {
     return {
-        type: FETCHING_USERS_QUESTIONS_SUCCESS,
-        username,
+        type: FETCHING_SEARCH_QUESTIONS_SUCCESS,
+        phrase,
         questionIds,
         lastUpdated: Date.now(),
     }
 }
 
-export function addSingleUsersQuestion (username, questionId) {
+export function addSingleSearchQuestion (username, questionId) {
     return {
-        type: ADD_SINGLE_USERS_QUESTION,
+        type: ADD_SINGLE_SEARCH_QUESTION,
         username,
         questionId,
     }
 }
 
-export function fetchAndHandleUsersQuestions(username) {
-    return function (dispatch, getState) {
-        dispatch(fetchingUsersQuestions());
-        fetchUsersQuestions(username, getState().users.ddbDocClient)
+export function fetchAndHandleSearchQuestions(phrase) {
+    return function (dispatch) {
+        dispatch(fetchingSearchQuestions());
+        search(phrase)
             .then((response) => {
+                console.log(response);
                 const questionsFromDdbResponse = createQuestionsFromDdbResponse(response);
                 dispatch(addMultipleQuestions(questionsFromDdbResponse.map));
-                dispatch(fetchingUsersQuestionsSuccess(username, questionsFromDdbResponse.sortedIds))
+                dispatch(fetchingSearchQuestionsSuccess(username, questionsFromDdbResponse.sortedIds))
             })
-            .catch((error) => dispatch(fetchingUsersQuestionsError(error)))
+            .catch((error) => dispatch(fetchingSearchQuestionsError(error)))
     }
 }
 
-const initialUserQuestionsState = {
+const initialSearchQuestionsState = {
     isFetching: true,
     error: '',
     lastUpdated: 0,
     questionIds: [],
 };
 
-function usersQuestion (state = initialUserQuestionsState, action) {
+function searchQuestion (state = initialSearchQuestionsState, action) {
     switch (action.type) {
-        case ADD_SINGLE_USERS_QUESTION :
+        case ADD_SINGLE_SEARCH_QUESTION :
             return {
                 ...state,
                 questionIds: state.questionIds.concat([action.questionId])
@@ -76,20 +77,20 @@ const initialState = {
     error: ''
 };
 
-export default function usersQuestions (state = initialState, action) {
+export default function searchQuestions (state = initialState, action) {
     switch (action.type) {
-        case FETCHING_USERS_QUESTIONS :
+        case FETCHING_SEARCH_QUESTIONS :
             return {
                 ...state,
                 isFetching: true,
             };
-        case FETCHING_USERS_QUESTIONS_ERROR :
+        case FETCHING_SEARCH_QUESTIONS_ERROR :
             return {
                 ...state,
                 isFetching: false,
                 error: action.error,
             };
-        case FETCHING_USERS_QUESTIONS_SUCCESS :
+        case FETCHING_SEARCH_QUESTIONS_SUCCESS :
             return {
                 ...state,
                 isFetching: false,
@@ -99,14 +100,14 @@ export default function usersQuestions (state = initialState, action) {
                     questionIds: action.questionIds,
                 },
             };
-        case ADD_SINGLE_USERS_QUESTION :
+        case ADD_SINGLE_SEARCH_QUESTION :
             return typeof state[action.username] === 'undefined'
                 ? state
                 : {
                     ...state,
                     isFetching: false,
                     error: '',
-                    [action.username]: usersQuestion(state[action.username], action),
+                    [action.username]: searchQuestion(state[action.username], action),
                 };
         default :
             return state

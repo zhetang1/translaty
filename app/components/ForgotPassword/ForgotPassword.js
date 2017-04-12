@@ -1,13 +1,12 @@
 import React, { PropTypes } from 'react'
 
-Login.propTypes = {
-    isFetching: PropTypes.bool.isRequired,
+ForgotPassword.propTypes = {
     onAuth: PropTypes.func.isRequired,
     username: PropTypes.string,
 };
 
 
-export default function Login ( {onAuth, username} ) {
+export default function ForgotPassword ( {onAuth, username} ) {
     return (
         <div className="col-sm-6 col-sm-offset-3">
             <h1>{'Reset password'}</h1>

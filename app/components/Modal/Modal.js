@@ -3,7 +3,7 @@ import { default as ReactModal } from 'react-modal'
 import {
     newDuckTop, pointer, newDuckInputContainer,
     newDuckInput, submitDuckBtn, darkBtn } from './styles.css'
-import { formatDuck } from 'helpers/utils'
+import { formatQuestion } from 'helpers/utils'
 
 const modalStyles = {
     content: {
@@ -30,7 +30,7 @@ Modal.propTypes = {
 
 export default function Modal (props) {
     function submitDuck () {
-        props.questionFanout(formatDuck(props.questionText, props.user))
+        props.questionFanout(formatQuestion(props.questionText, props.user))
     }
 
     return (

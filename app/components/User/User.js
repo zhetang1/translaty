@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react'
-import { userContainer, header } from './styles.css'
-import { errorMsg } from 'sharedStyles/styles.css'
+import { userContainer, subHeader, errorMsg } from 'sharedStyles/styles.css'
 import { QuestionContainer } from 'containers'
 
 User.propTypes = {
@@ -13,10 +12,10 @@ User.propTypes = {
 
 export default function User(props) {
     return props.noUser === true
-        ? <p className={header}>{'This user does not exist'}</p>
+        ? <p className={subHeader}>{'This user does not exist'}</p>
         :<div>
         {props.isFetching === true
-            ?<p className={header}>{'Loading'}</p>
+            ?<p className={subHeader}>{'Loading'}</p>
             :<div>
             <div className={userContainer}>
                 <div>{props.name}</div>
@@ -27,7 +26,7 @@ export default function User(props) {
                     key={id} />
             ))}
             {props.questionIds.length === 0
-                ? <p className={header}>
+                ? <p className={subHeader}>
                 {`It looks like ${props.name.split(' ')[0]} hasn't asked any question yet.`}
             </p>
                 : null}

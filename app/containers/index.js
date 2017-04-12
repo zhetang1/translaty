@@ -10,3 +10,5 @@ export QuestionDetailsContainer from './QuestionDetails/QuestionDetailsContainer
 export RepliesContainer from './Replies/RepliesContainer'
 export ConfirmRegistrationContainer from './ConfirmRegistration/ConfirmRegistrationContainer'
 export ContactUsContainer from './ContactUs/ContactUsContainer'
+export SearchContainer from './Search/SearchContainer'
+export SearchResultsContainer from './SearchResults/SearchResultsContainer'

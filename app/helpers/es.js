@@ -8,7 +8,7 @@ const elasticsearch = new Elasticsearch({
     host: 'search-translaty-sdt77wmwvyrqmzgawr4cviowhq.us-east-1.es.amazonaws.com'
 });
 
-export function search(keyword) {
+export function search(phrase) {
     return new Promise(function (resolve, reject) {
         elasticsearch.search(
             {
@@ -17,7 +17,7 @@ export function search(keyword) {
                 body: {
                     query: {
                         "match": {
-                            "text.S": keyword
+                            "text.S": 'q'
                         }
                     }
                 }
