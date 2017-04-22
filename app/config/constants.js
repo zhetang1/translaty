@@ -1,4 +1,3 @@
-import firebase from 'firebase'
 import AWS from 'aws-sdk';
 import { CognitoUserPool } from 'amazon-cognito-identity-js';
 
@@ -9,11 +8,6 @@ const config = {
     storageBucket: "tangzhe-translaty-project.appspot.com",
     messagingSenderId: "719798162662"
 };
-
-firebase.initializeApp(config);
-
-export const ref = firebase.database().ref();
-export const firebaseAuth = firebase.auth;
 
 export const usersQuestionsExpirationLength = 100000;
 export const userExpirationLength = 100000;

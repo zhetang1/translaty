@@ -29,7 +29,7 @@ export default function Authenticate ({error, isFetching, onAuth, onLogin, onFor
             <ConfirmRegistrationLinks />
             <p>
                 {'Password must have:'}
-                <li>{'Minimum 8 characters'}</li>
+                <li>{'Minimum 6 characters'}</li>
                 <li>{'Require numbers'}</li>
                 <li>{'Require special character'}</li>
                 <li>{'Require uppercase letters'}</li>

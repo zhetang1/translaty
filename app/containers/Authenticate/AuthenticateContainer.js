@@ -18,8 +18,9 @@ const AuthenticateContainer = React.createClass({
     handleAuth (e) {
         e.preventDefault();
         const elements = e.currentTarget.elements;
-        this.props.signUpNewUser(elements[0].value, elements[1].value, elements[2].value);
-        this.context.router.replace('confirmRegistration')
+        this.props.signUpNewUser(elements[0].value, elements[1].value, elements[2].value)
+            .then(() => this.context.router.replace('confirmRegistration'))
+            .catch((error) => alert(error));
     },
     handleLogin (e) {
         e.preventDefault();
